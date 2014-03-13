@@ -160,6 +160,7 @@ end
 
 SHEEP_DEF.on_step = function(self, dtime)
 	if self.dead then return end
+	if self.lifetime == nil then self.lifetime = 0 end
 	self.timer = self.timer + 0.01
 	self.lifetime = self.lifetime + 0.01
 	self.turn_timer = self.turn_timer + 0.01
@@ -233,7 +234,8 @@ SHEEP_DEF.on_step = function(self, dtime)
 	end
 
 	-- play random sound
-	if self.sound_timer > self.timer + math.random(5,self.lifetime/2) then
+	local num = tonumber(self.lifetime/2) or 35
+	if self.sound_timer > self.timer + math.random(5, num) then
 		minetest.sound_play(s_sound_normal, {pos = current_pos, max_hear_distance = 10, gain = 0.7})
 		self.sound_timer = 0
 	end
