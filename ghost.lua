@@ -2,17 +2,17 @@ local g_chillaxin_speed = 2
 local g_animation_speed = 10
 local g_mesh = "creatures_mob.x"
 local g_texture = {"creatures_ghost.png"}
-local g_hp = 15
+local g_hp = 12
 local g_drop = ""
 local g_player_radius = 14
 local g_hit_radius = 1
-local g_ll = 7
+creatures.g_ll = 7
 
 local g_sound_normal = "creatures_ghost"
 local g_sound_hit = "creatures_ghost_hit"
 local g_sound_dead = "creatures_ghost_death"
 
-local g_spawn_nodes = {"default:dirt_with_grass","default:stone","default:dirt","default:desert_sand"}
+creatures.g_spawn_nodes = {"default:dirt_with_grass","default:desert_sand"}
 
 local function g_get_animations()
 	return {
@@ -20,13 +20,6 @@ local function g_get_animations()
 		walk_END = 187
 	}
 end
-
-local ANIM_STAND = 1
-local ANIM_SIT = 2
-local ANIM_LAY = 3
-local ANIM_WALK  = 4
-local ANIM_WALK_MINE = 5
-local ANIM_MINE = 6
 
 function g_hit(self)
 	local sound = g_sound_hit
@@ -85,7 +78,7 @@ GHOST_DEF.on_activate = function(self)
 	self.anim = g_get_animations()
 	self.object:set_animation({x=self.anim.stand_START,y=self.anim.stand_END}, g_animation_speed, 0)
 	self.npc_anim = ANIM_STAND
-	self.object:setacceleration({x=0,y=0,z=0})--20
+	self.object:setacceleration({x=0,y=0,z=0})
 	self.state = 1
 	self.object:set_hp(g_hp)
 	self.object:set_armor_groups({fleshy=130})
@@ -113,19 +106,8 @@ GHOST_DEF.on_punch = function(self, puncher, time_from_last_punch, tool_capabili
 			elseif self.state >= 2 then
 				self.state = 9
 			end
-			--add wear to swords
-			if not minetest.setting_getbool("creative_mode") then
-				local item = puncher:get_wielded_item()
-				local def = item:get_definition()
-				if def and def.tool_capabilities and def.tool_capabilities.groupcaps
-				   and def.tool_capabilities.groupcaps.snappy then
-					local uses = def.tool_capabilities.groupcaps.snappy.uses or 10
-					uses = uses*2 --since default values are too low
-					local wear = 65535/uses
-					item:add_wear(wear)
-					puncher:set_wielded_item(item)
-				end
-			end
+			-- add wear to sword/tool
+			creatures.add_wear(puncher, tool_capabilities)
 		end
 	end
 
@@ -151,7 +133,6 @@ GHOST_DEF.on_step = function(self, dtime)
 
 	-- death
 	if self.object:get_hp() < 1 then
-		--self.object:setvelocity({x=0,y=-20,z=0})
 		self.object:set_hp(0)
 		self.attacker = ""
 		self.state = 0
@@ -167,10 +148,12 @@ GHOST_DEF.on_step = function(self, dtime)
 	-- die when in water, lava or sunlight
 	local wtime = minetest.env:get_timeofday()
 	local ll = minetest.env:get_node_light({x=current_pos.x,y=current_pos.y+1,z=current_pos.z}) or 0
-	if current_node.name == "default:water_source" or
-	   current_node.name == "default:water_flowing" or 
-	   current_node.name == "default:lava_source" or 
-	   current_node.name == "default:lava_flowing" or
+	local nn = nil
+	if current_node ~= nil then nn = current_node.name end
+	if nn ~= nil and nn == "default:water_source" or
+	   nn == "default:water_flowing" or 
+	   nn == "default:lava_source" or 
+	   nn == "default:lava_flowing" or
 	   (wtime > 0.2 and wtime < 0.805 and current_pos.y > 0 and ll > 11) then
 		self.sound_timer = self.sound_timer + dtime
 		if self.sound_timer >= 0.8 then
@@ -241,10 +224,10 @@ GHOST_DEF.on_step = function(self, dtime)
 			self.direction = {x = math.sin(self.yaw)*-1, y = 0, z = math.cos(self.yaw)}
 		end
 		self.object:setvelocity({x=0,y=self.object:getvelocity().y,z=0})
-		if self.npc_anim ~= ANIM_STAND then
+		if self.npc_anim ~= creatures.ANIM_STAND then
 			self.anim = g_get_animations()
 			self.object:set_animation({x=self.anim.stand_START,y=self.anim.stand_END}, g_animation_speed, 0)
-			self.npc_anim = ANIM_STAND
+			self.npc_anim = creatures.ANIM_STAND
 		end
 		if self.attacker ~= "" then
 			self.direction = {x = math.sin(self.yaw)*-1, y = 0, z = math.cos(self.yaw)}
@@ -264,10 +247,10 @@ GHOST_DEF.on_step = function(self, dtime)
 			self.turn_timer = 0
 			self.direction = {x = math.sin(self.yaw)*-1, y = 0, z = math.cos(self.yaw)}
 		end
-		if self.npc_anim ~= ANIM_WALK then
+		if self.npc_anim ~= creatures.ANIM_WALK then
 			self.anim = g_get_animations()
 			self.object:set_animation({x=self.anim.walk_START,y=self.anim.walk_END}, g_animation_speed, 0)
-			self.npc_anim = ANIM_WALK
+			self.npc_anim = creatures.ANIM_WALK
 		end
 		--jump
 		if self.direction ~= nil and self.attacker ~= "" then
@@ -311,58 +294,3 @@ GHOST_DEF.on_step = function(self, dtime)
 end
 
 minetest.register_entity("creatures:ghost", GHOST_DEF)
-
-
---spawn-egg
-
-minetest.register_craftitem("creatures:ghost_spawn_egg", {
-	description = "Ghost spawn-egg",
-	inventory_image = "creatures_egg_ghost.png",
-	liquids_pointable = false,
-	stack_max = 99,
-	on_place = function(itemstack, placer, pointed_thing)
-		if pointed_thing.type == "node" then
-			local p = pointed_thing.above
-			p.y = p.y+0.5
-			creatures.spawn(p, 1, "creatures:ghost")
-			if not minetest.setting_getbool("creative_mode") then itemstack:take_item() end
-			return itemstack
-		end
-	end,
-
-})
-
-if not minetest.setting_getbool("only_peaceful_mobs") then
- -- spawn randomly in world
- minetest.register_abm({
-	nodenames = g_spawn_nodes,
-	interval = 44.0,
-	chance = 7500,
-	action = function(pos, node, active_object_count, active_object_count_wider)
-			if pos.y < 0 then return end
-			pos.y = pos.y+1
-			local ll = minetest.env:get_node_light(pos)
-			local wtime = minetest.env:get_timeofday()
-			if not ll then
-				return
-			end
-			if ll >= g_ll then
-				return
-			end
-			if ll < -1 then
-				return
-			end
-			if minetest.env:get_node(pos).name ~= "air" then
-				return
-			end
-			pos.y = pos.y+1
-			if minetest.env:get_node(pos).name ~= "air" then
-				return
-			end
-			if (wtime > 0.2 and wtime < 0.805) then
-				return
-			end
-			creatures.spawn(pos, 1, "creatures:ghost")
-	end
- })
-end
