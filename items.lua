@@ -1,7 +1,7 @@
 -- drop items
 minetest.register_craftitem("creatures:flesh", {
 	description = "Flesh",
-	inventory_image = "creatures_rotten_flesh.png",
+	inventory_image = "creatures_flesh.png",
 	on_use = minetest.item_eat(4),
 })
 

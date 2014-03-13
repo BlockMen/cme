@@ -70,6 +70,7 @@ Changelog:
  - tweaked and restructured code
  - ghosts only spawn on grass and desert-sand blocks
  - ghosts have now 12 HP (instead 15 HP)
+ - zombies don't jump over fences anymore
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it
