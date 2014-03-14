@@ -235,6 +235,7 @@ SHEEP_DEF.on_step = function(self, dtime)
 
 	-- play random sound
 	local num = tonumber(self.lifetime/2) or 35
+	if num < 6 then num = 6 end
 	if self.sound_timer > self.timer + math.random(5, num) then
 		minetest.sound_play(s_sound_normal, {pos = current_pos, max_hear_distance = 10, gain = 0.7})
 		self.sound_timer = 0
