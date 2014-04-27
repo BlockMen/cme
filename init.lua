@@ -7,25 +7,49 @@ creatures.ANIM_WALK  = 4
 creatures.ANIM_EAT = 5
 creatures.ANIM_RUN = 6
 
+-- spawning controls (experimental)
+creatures.spawned = {}
+local spawn_day = 600
+local tod = 0
+local absolute_mob_max = 50
+
+local function timer(tick)
+	tod = tod + 1
+	if tod > spawn_day then
+		tod = 0
+		creatures.spawned = nil
+		creatures.spawned = {}
+	end
+	minetest.after(tick, timer, tick)
+end
+
+timer(1)
+
+
 local tool_uses = {0, 30, 110, 150, 280, 300, 500, 1000}
 
 -- helping functions
 
-function creatures.spawn(pos, number, mob, limit, range)
+function creatures.spawn(pos, number, mob, limit, range, abs_max)
 	if not pos or not number or not mob then return end
 	if number < 1 then return end
 	if limit == nil then limit = 1 end
 	if range == nil then range = 10 end
+	if abs_max == nil then abs_max = absolute_mob_max end
 	local m_name = string.sub(mob,11)
+	if not creatures.spawned[m_name] then creatures.spawned[m_name] = 0 end
 	local res,mobs,player_near = creatures.find_mates(pos, m_name, range)
 	for i=1,number do
 		local x = 1/math.random(1,3)
 		local z = 1/math.random(1,3)
 		local p = {x=pos.x+x,y=pos.y,z=pos.z+z}
-		if mobs+i <= limit then
+		if mobs+i <= limit and creatures.spawned[m_name]+i < abs_max then
 			minetest.after(i/5,function()
-				minetest.env:add_entity(p, mob)
-				minetest.log("action", "Spawned "..mob.." at ("..pos.x..","..pos.y..","..pos.z..")")
+				local obj = minetest.env:add_entity(p, mob)
+				if obj then
+					creatures.spawned[m_name] = creatures.spawned[m_name] + 1
+					minetest.log("action", "Spawned "..mob.." at ("..pos.x..","..pos.y..","..pos.z..")")
+				end
 			end)
 		end
 	end
