@@ -4,6 +4,7 @@ local z_mesh = "creatures_mob.x"
 local z_texture = {"creatures_zombie.png"}
 local z_hp = 20
 local z_drop = "creatures:rotten_flesh"
+local z_life_max = 80 --~5min
 
 local z_player_radius = 14
 local z_hit_radius = 1.4
@@ -64,6 +65,7 @@ ZOMBIE_DEF = {
 	textures = z_texture,
 	makes_footstep_sound = true,
 	npc_anim = 0,
+	lifetime = 0,
 	timer = 0,
 	turn_timer = 0,
 	vec = 0,
@@ -81,7 +83,15 @@ ZOMBIE_DEF = {
 	mob_name = "zombie"
 }
 
-ZOMBIE_DEF.on_activate = function(self)
+ZOMBIE_DEF.get_staticdata = function(self)
+	return minetest.serialize({
+		itemstring = self.itemstring,
+		timer = self.timer,
+		lifetime = self.lifetime,
+	})
+end
+
+ZOMBIE_DEF.on_activate = function(self, staticdata, dtime_s)
 	z_update_visuals_def(self)
 	self.anim = z_get_animations()
 	self.object:set_animation({x=self.anim.stand_START,y=self.anim.stand_END}, z_animation_speed, 0)
@@ -93,6 +103,16 @@ ZOMBIE_DEF.on_activate = function(self)
 	self.last_pos = {x=0,y=0,z=0}
 	self.can_punch = true
 	self.dead = false
+	self.lifetime = 0
+	if staticdata then
+		local tmp = minetest.deserialize(staticdata)
+		if tmp and tmp.timer then
+			self.timer = tmp.timer
+		end
+		if tmp and tmp.lifetime ~= nil then
+			self.lifetime = tmp.lifetime
+		end
+	end
 end
 
 ZOMBIE_DEF.on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
@@ -126,6 +146,7 @@ end
 ZOMBIE_DEF.on_step = function(self, dtime)
 	if self.dead then return end
 	self.timer = self.timer + 0.01
+	self.lifetime = self.lifetime + 0.01
 	self.turn_timer = self.turn_timer + 0.01
 	self.jump_timer = self.jump_timer + 0.01
 	self.punch_timer = self.punch_timer + 0.01
@@ -153,6 +174,15 @@ ZOMBIE_DEF.on_step = function(self, dtime)
 			    creatures.drop(current_pos, {{name=z_drop, count=math.random(0,2)}})
 			end
 		end)
+	end
+
+	-- die if old
+	if self.lifetime > z_life_max then
+		self.object:set_hp(0)
+		self.state = 0
+		self.dead = true
+		self.object:remove()
+		return
 	end
 	
 	-- die when in water, lava or sunlight
@@ -293,31 +323,20 @@ ZOMBIE_DEF.on_step = function(self, dtime)
 			self.npc_anim = creatures.ANIM_WALK
 			self.object:set_animation({x=self.anim.walk_START,y=self.anim.walk_END}, z_animation_speed, 0)
 		end
+
 		--jump
-		if self.direction ~= nil then
-			if self.jump_timer > 0.25 then
-				self.jump_timer = 0
-				local p = current_pos
-				local n = minetest.env:get_node_or_nil({x=p.x + self.direction.x,y=p.y-0.5,z=p.z + self.direction.z})
-				if n and n.name and minetest.registered_items[n.name].walkable and minetest.registered_items[n.name].groups.fences == nil and n.name ~= "default:fence_wood" then
-					self.object:setvelocity({x=self.object:getvelocity().x,y=7.1,z=self.object:getvelocity().z})
-				end
-			end
-		end
+		local p = current_pos
+		p.y = p.y-0.5
+		creatures.jump(self, p, 7, 0.25)
 
 		if self.attacker ~= "" and minetest.setting_getbool("enable_damage") then
 			local s = current_pos
-			local p = self.attacker:getpos()
+			local attacker_pos = self.attacker:getpos() or nil
+			if attacker_pos == nil then return end
+			local p = attacker_pos
 			if (s ~= nil and p ~= nil) then
 				local dist = ((p.x-s.x)^2 + (p.y-s.y)^2 + (p.z-s.z)^2)^0.5
-
-				if dist < z_hit_radius and self.attacking_timer > 0.6 then
-				self.attacker:punch(self.object, 1.0,  {
-					full_punch_interval=1.0,
-					damage_groups = {fleshy=1}
-				})
-					self.attacking_timer = 0
-				end
+				creatures.attack(self, current_pos, attacker_pos, dist, z_hit_radius)
 			end
 		end
 	end

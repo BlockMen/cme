@@ -257,8 +257,10 @@ GHOST_DEF.on_step = function(self, dtime)
 			if self.jump_timer > 0.1 then
 				self.jump_timer = 0
 				local p1 = current_pos
+				if not p1 then return end
 				local me_y = math.floor(p1.y)
 				local p2 = self.attacker:getpos()
+				if not p2 then return end
 				local p_y = math.floor(p2.y+3-self.dist)
 				if me_y < p_y then
 					self.object:setvelocity({x=self.object:getvelocity().x,y=1*g_chillaxin_speed,z=self.object:getvelocity().z})
@@ -276,18 +278,14 @@ GHOST_DEF.on_step = function(self, dtime)
 
 		if self.attacker ~= "" and minetest.setting_getbool("enable_damage") then
 			local s = current_pos
-			local p = self.attacker:getpos()
+			local attacker_pos = self.attacker:getpos() or nil
+			if attacker_pos == nil then return end
+			local p = attacker_pos 
 			p.y = p.y+3-self.dist
 			self.direction = {x = math.sin(self.yaw)*-1, y = 0, z = math.cos(self.yaw)}
 			if (s ~= nil and p ~= nil) then
 				local dist = ((p.x-s.x)^2 + (p.y-s.y)^2 + (p.z-s.z)^0.5)^2
-				if dist < g_hit_radius and self.attacking_timer > 0.6 then
-				self.attacker:punch(self.object, 1.0,  {
-					full_punch_interval=1.0,
-					damage_groups = {fleshy=1}
-				})
-					self.attacking_timer = 0
-				end
+				creatures.attack(self, current_pos, attacker_pos, dist, g_hit_radius)
 			end
 		end
 	end

@@ -315,16 +315,7 @@ SHEEP_DEF.on_step = function(self, dtime)
 			self.npc_anim = anim
 		end
 		--jump
-		if self.direction ~= nil then
-			if self.jump_timer > 0.2 then
-				self.jump_timer = 0
-				local p = current_pos
-				local n = minetest.env:get_node({x=p.x + self.direction.x,y=p.y,z=p.z + self.direction.z})
-				if n and n.name and minetest.registered_items[n.name].walkable and minetest.registered_items[n.name].groups.fences == nil and n.name ~= "default:fence_wood" then
-					self.object:setvelocity({x=self.object:getvelocity().x,y=6.85,z=self.object:getvelocity().z})
-				end
-			end
-		end
+		creatures.jump(self, current_pos, 6.85, 0.2)
 	end
 
 	-- EATING

@@ -70,7 +70,10 @@ function creatures.find_mates(pos, name, radius)
 		if obj:is_player() then
 			player_near = true 
 		else
-			if obj:get_luaentity().mob_name == name then mobs = mobs + 1 end
+			local entity = obj:get_luaentity()
+			if entity and entity.mob_name and entity.mob_name == name then
+				mobs = mobs + 1 
+			end
 		end
 	end
 	if mobs > 1 then
@@ -84,6 +87,45 @@ function creatures.compare_pos(pos1,pos2)
 		return true
 	end
 	return false
+end
+
+function creatures.attack(self, pos1, pos2, dist, range)
+	if not self then return end
+	if not pos1 or not pos2 then return end
+	if minetest.line_of_sight(pos1,pos2) ~= true then
+		return
+	end
+	if dist < range and self.attacking_timer > 0.6 then
+		self.attacker:punch(self.object, 1.0,  {
+				full_punch_interval=1.0,
+				damage_groups = {fleshy=1}
+		})
+		self.attacking_timer = 0
+	end
+end
+
+function creatures.jump(self, pos, jump_y, timer)
+	if not self or not pos then return end
+	if self.direction ~= nil then
+		if self.jump_timer > timer then
+			self.jump_timer = 0
+			local p = {x=pos.x + self.direction.x,y=pos.y,z=pos.z + self.direction.z}-- pos
+			local n = minetest.get_node_or_nil(p)
+			p.y = p.y+1
+			local n2 = minetest.get_node_or_nil(p)
+			local def = nil
+			local def2 = nil
+			if n and n.name then
+				def = minetest.registered_items[n.name]
+			end
+			if n2 and n2.name then
+				def2 = minetest.registered_items[n2.name]
+			end
+			if def and def.walkable and def2 and not def2.walkable and not def.groups.fences and n.name ~= "default:fence_wood" then-- 
+				self.object:setvelocity({x=self.object:getvelocity().x,y=jump_y,z=self.object:getvelocity().z})
+			end
+		end
+	end
 end
 
 -- hostile mobs
