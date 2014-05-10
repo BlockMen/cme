@@ -174,17 +174,17 @@ function creatures.follow(self, items, radius)
 					end
 				end
 				if quit then return end
+				NPC = current_pos
+				PLAYER = object:getpos()
+				self.vec = {x=PLAYER.x-NPC.x, y=PLAYER.y-NPC.y, z=PLAYER.z-NPC.z}
+				self.yaw = math.atan(self.vec.z/self.vec.x)+math.pi^2
+				if PLAYER.x > NPC.x then
+					self.yaw = self.yaw + math.pi
+				end
+				self.yaw = self.yaw - 2
+				self.object:setyaw(self.yaw)
+				self.feeder = object
 			end
-			NPC = current_pos
-			PLAYER = object:getpos()
-			self.vec = {x=PLAYER.x-NPC.x, y=PLAYER.y-NPC.y, z=PLAYER.z-NPC.z}
-			self.yaw = math.atan(self.vec.z/self.vec.x)+math.pi^2
-			if PLAYER.x > NPC.x then
-				self.yaw = self.yaw + math.pi
-			end
-			self.yaw = self.yaw - 2
-			self.object:setyaw(self.yaw)
-			self.feeder = object
 		end
 	end
 end
