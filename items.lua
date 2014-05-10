@@ -1,3 +1,8 @@
+minetest.register_tool("creatures:shears", {
+	description = "Shears",
+	inventory_image = "creatures_shears.png",
+})
+
 -- drop items
 minetest.register_craftitem("creatures:flesh", {
 	description = "Flesh",

@@ -11,6 +11,7 @@ local s_player_radius = 14
 local s_sound_normal = "creatures_sheep"
 local s_sound_hit = "creatures_sheep"
 local s_sound_dead = "creatures_sheep"
+local s_sound_shears = "creatures_shears"
 
 creatures.s_spawn_nodes = {"default:dirt_with_grass"}
 
@@ -147,7 +148,7 @@ SHEEP_DEF.on_punch = function(self, puncher, time_from_last_punch, tool_capabili
 		end
 
 		local my_pos = self.object:getpos()
-		my_pos.y = my_pos.y + 0.5
+		my_pos.y = my_pos.y + 0.4
 
 		-- drop 1-2 whool when punched
 		if self.has_wool then
@@ -156,6 +157,27 @@ SHEEP_DEF.on_punch = function(self, puncher, time_from_last_punch, tool_capabili
 		end
 	end
 
+end
+
+SHEEP_DEF.on_rightclick = function(self, clicker)
+	if not clicker or not self.has_wool then
+		return
+	end
+
+	local item = clicker:get_wielded_item()
+	local name = item:get_name()
+	if item and name and name == "creatures:shears" then
+		local my_pos = self.object:getpos()
+		minetest.sound_play(s_sound_shears, {pos = my_pos, max_hear_distance = 10, gain = 1})
+		my_pos.y = my_pos.y + 0.4
+		self.has_wool = false
+		s_update_visuals_def(self)
+		creatures.drop(my_pos, {{name=s_drop, count=2}})
+		if not minetest.setting_getbool("creative_mode") then
+			item:add_wear(65535/100)
+			clicker:set_wielded_item(item)
+		end
+	end
 end
 
 SHEEP_DEF.on_step = function(self, dtime)

@@ -55,6 +55,9 @@ following sounds are created by confusion_music (freesound.org)
 following sound is created by Yuval (freesound.org)
 - creatures_sheep.3.ogg,  CC-BY 3.0
 
+following sound is created by SmartWentCody (freesound.org)
+- creatures_shears.ogg,  CC-BY 3.0
+
 All other sounds (c) Copyright BlockMen (2014), CC-BY 3.0
 
 Changelog:
