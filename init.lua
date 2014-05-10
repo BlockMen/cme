@@ -159,6 +159,36 @@ function creatures.jump(self, pos, jump_y, timer)
 	end
 end
 
+function creatures.follow(self, items, radius)
+	local current_pos = self.object:getpos()
+	-- seach for players
+	for  _,object in ipairs(minetest.env:get_objects_inside_radius(current_pos, radius)) do
+		if object:is_player() then			
+			local item = object:get_wielded_item()
+			local item_name = item:get_name()
+			if item and item_name and item_name ~= "" then
+				local quit = true
+				for _,food in ipairs(items) do
+					if food.name == item_name then
+						quit = false
+					end
+				end
+				if quit then return end
+			end
+			NPC = current_pos
+			PLAYER = object:getpos()
+			self.vec = {x=PLAYER.x-NPC.x, y=PLAYER.y-NPC.y, z=PLAYER.z-NPC.z}
+			self.yaw = math.atan(self.vec.z/self.vec.x)+math.pi^2
+			if PLAYER.x > NPC.x then
+				self.yaw = self.yaw + math.pi
+			end
+			self.yaw = self.yaw - 2
+			self.object:setyaw(self.yaw)
+			self.feeder = object
+		end
+	end
+end
+
 -- hostile mobs
 dofile(minetest.get_modpath("creatures").."/ghost.lua")
 dofile(minetest.get_modpath("creatures").."/zombie.lua")

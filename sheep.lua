@@ -82,6 +82,7 @@ SHEEP_DEF = {
 	last_pos = {x=0,y=0,z=0},
 	punch_timer = 0,
 	sound_timer = 0,
+	feeder = "",
 	mob_name = "sheep"
 }
 
@@ -111,6 +112,7 @@ SHEEP_DEF.on_activate = function(self, staticdata, dtime_s)
 	self.dead = false
 	self.has_wool = true
 	self.lifetime = 0
+	self.feeder = ""
 	if staticdata then
 		local tmp = minetest.deserialize(staticdata)
 		if tmp and tmp.timer then
@@ -244,15 +246,22 @@ SHEEP_DEF.on_step = function(self, dtime)
 	if self.state < 4 then
 		if self.timer > 4/self.state then
 			self.timer = 0
-			local new = math.random(1,3)
-			if self.state == 3 then new = 1 end
-			self.state = new
+			--local new = math.random(1,3)
+			--if self.state == 3 then new = 1 end
+			--if self.feeder == "" then new = 5 end
+			self.state = 5--new
 			s_update_visuals_def(self)
 		end
 	elseif self.state == 4 and self.timer > 1.5 then
 		self.state = 2
 		self.timer = 0
-	
+	else
+		self.timer = 0
+		local new = math.random(1,3)
+		if self.state == 3 then new = 1 end
+		if self.feeder ~= "" then new = 5 end
+		self.state = new
+		--s_update_visuals_def(self)	
 	end
 
 	-- play random sound
@@ -303,6 +312,20 @@ SHEEP_DEF.on_step = function(self, dtime)
 		self.state = 1
 	end
 
+	-- CHECK FEEDER
+	if self.state == 5 then
+		self.feeder = ""
+		creatures.follow(self, {{name="farming:wheat"}}, 8)
+		if self.feeder ~= "" then
+			self.direction = {x = math.sin(self.yaw)*-1, y = -20, z = math.cos(self.yaw)}
+			self.state = 2
+		else 
+			local new = math.random(1,3)
+			if self.state == 3 then new = 1 end
+			self.state = new
+		end
+	end
+
 	-- WALKING
 	if self.state == 2 or self.state == 4 then
 		self.lastpos = self.object:getpos()
@@ -312,10 +335,11 @@ SHEEP_DEF.on_step = function(self, dtime)
 			speed = 2.2
 			anim = creatures.ANIM_RUN
 		end
-		--[[if self.farmer ~= "" then
+		if self.feeder ~= "" then
 			--use this for following weed, etc
-			self.direction = {x = math.sin(self.yaw)*-1, y = -20, z = math.cos(self.yaw)}
-		end]]
+			--self.direction = {x = math.sin(self.yaw)*-1, y = -20, z = math.cos(self.yaw)}
+			self.state = 5
+		end
 
 		if self.direction ~= nil then
 			self.object:setvelocity({x=self.direction.x*s_chillaxin_speed*speed,y=self.object:getvelocity().y,z=self.direction.z*s_chillaxin_speed*speed})
