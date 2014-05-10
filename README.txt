@@ -2,7 +2,7 @@ Minetest mod "Creatures"
 =======================
 by BlockMen (c) 2014
 
-Version: 1.1.1 Beta
+Version: 1.1.2 Beta
 
 About
 ~~~~~
@@ -18,8 +18,8 @@ Ghosts have 12 HP and don't drop any items atm (might be changed if i have an id
 
 Sheeps spawn only at day-time and are friendly mobs. They remain around 5 minutes in the world unless there
 are other sheeps around, then there is no fixed limit. If there is grass (dirt with grass) they eat the grass
-and get new wool that way.
-Sheeps have 8 HP and drop 1-2 wool when punched. They need to eat grass until they can produce new wool.
+and get new wool that way. They will follow you if you have Wheat in your hand.
+Sheeps have 8 HP and drop 1-2 wool when punched or 2 wool when using shears. They need to eat grass until they can produce new wool.
 
 They can't harm you in your house (in case there is no door open). If it becomes day both mobs will take damage
 by the sunlight, so they will die after a while.
@@ -32,6 +32,9 @@ Example:
 - Diamond Sword: 1500 uses
 - Wooden Sword: 30 uses
 
+Crafting Shears:
+-----------  steel ingot
+steel ingot  stick 
 
 
 
@@ -80,6 +83,11 @@ Changelog:
  - Use line_of_sight() befor attacking
  - Fix different crashes
  - Experimental spawning control
+
+# 1.1.2
+ - Sheeps follow you when holding wheat
+ - Added Shears (rightclick)
+ - Items are only droped (without player action) with builtin_mod
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it
