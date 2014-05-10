@@ -7,6 +7,13 @@ creatures.ANIM_WALK  = 4
 creatures.ANIM_EAT = 5
 creatures.ANIM_RUN = 6
 
+-- Drop items (when not killed by player) only if items get removed
+creatures.drop_on_death = false
+local remove_items = minetest.setting_get("remove_items")
+if minetest.get_modpath("builtin_item") ~= nil and remove_items ~= nil and remove_items > 0 then
+	creatures.drop_on_death = true
+end
+
 -- spawning controls (experimental)
 creatures.spawned = {}
 local spawn_day = 600

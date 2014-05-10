@@ -170,7 +170,7 @@ ZOMBIE_DEF.on_step = function(self, dtime)
 		self.object:set_animation({x=self.anim.lay_START,y=self.anim.lay_END}, z_animation_speed, 0)
 		minetest.after(1, function()
 			self.object:remove()	
-			if self.object:get_hp() < 1 then
+			if self.object:get_hp() < 1 and creatures.drop_on_death then
 			    creatures.drop(current_pos, {{name=z_drop, count=math.random(0,2)}})
 			end
 		end)

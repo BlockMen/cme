@@ -202,7 +202,7 @@ SHEEP_DEF.on_step = function(self, dtime)
 		minetest.sound_play(s_sound_dead, {pos = current_pos, max_hear_distance = 10, gain = 0.9})
 		self.object:set_animation({x=self.anim.lay_START,y=self.anim.lay_END}, s_animation_speed, 0)
 		minetest.after(1, function()
-			if self.has_wool then		
+			if self.has_wool and creatures.drop_on_death then		
 	    			local obj = minetest.env:add_item(current_pos, s_drop)
 			end
 			self.object:remove()
