@@ -1,6 +1,15 @@
+-- shears
 minetest.register_tool("creatures:shears", {
 	description = "Shears",
 	inventory_image = "creatures_shears.png",
+})
+
+minetest.register_craft({
+	output = 'creatures:shears 4',
+	recipe = {
+		{'','default:steel_ingot'},
+		{'default:steel_ingot','default:stick'},
+	}
 })
 
 -- drop items
