@@ -132,7 +132,8 @@ end
 
 SHEEP_DEF.on_punch = function(self, puncher, time_from_last_punch, tool_capabilities, dir)
 	if not self.can_punch then return end
-
+	
+	self.feeder = ""
 	--SET RUN state (panic)
 	self.state = 4
 	self.timer = 0
@@ -255,12 +256,12 @@ SHEEP_DEF.on_step = function(self, dtime)
 	elseif self.state == 4 and self.timer > 1.5 then
 		self.state = 2
 		self.timer = 0
-	else
-		self.timer = 0
+	elseif self.state == 5 then
 		local new = math.random(1,3)
 		if self.state == 3 then new = 1 end
 		if self.feeder ~= "" then new = 5 end
 		self.state = new
+		self.timer = 0
 		--s_update_visuals_def(self)	
 	end
 
@@ -366,7 +367,7 @@ SHEEP_DEF.on_step = function(self, dtime)
 
 	-- EATING
 	if self.state == 3 then--and not self.has_wool then
-		self.object:setvelocity({x=0,y=self.object:getvelocity().y,z=0})
+		self.object:setvelocity({x=0,y=-20,z=0})
 		local p = {x=current_pos.x,y=current_pos.y-1,z=current_pos.z}
 		local n = minetest.get_node(p) or nil
 		if n and n.name and n.name == "default:dirt_with_grass" then
