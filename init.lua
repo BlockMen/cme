@@ -44,17 +44,18 @@ function creatures.spawn(pos, number, mob, limit, range, abs_max)
 	if range == nil then range = 10 end
 	if abs_max == nil then abs_max = absolute_mob_max end
 	local m_name = string.sub(mob,11)
-	if not creatures.spawned[m_name] then creatures.spawned[m_name] = 0 end
+	local spawned = creatures.spawned[m_name]
+	if not spawned then spawned = 0 end
 	local res,mobs,player_near = creatures.find_mates(pos, m_name, range)
 	for i=1,number do
 		local x = 1/math.random(1,3)
 		local z = 1/math.random(1,3)
 		local p = {x=pos.x+x,y=pos.y,z=pos.z+z}
-		if mobs+i <= limit and creatures.spawned[m_name]+i < abs_max then
+		if mobs+i <= limit and spawned+i < abs_max then
 			minetest.after(i/5,function()
 				local obj = minetest.env:add_entity(p, mob)
 				if obj then
-					creatures.spawned[m_name] = creatures.spawned[m_name] + 1
+					creatures.spawned[m_name] = spawned + 1
 					minetest.log("action", "Spawned "..mob.." at ("..pos.x..","..pos.y..","..pos.z..")")
 				end
 			end)
