@@ -2,7 +2,7 @@ Minetest mod "Creatures"
 =======================
 by BlockMen (c) 2014
 
-Version: 1.1.2 Beta
+Version: 1.1.3 Beta
 
 About
 ~~~~~
@@ -88,6 +88,11 @@ Changelog:
  - Sheeps follow you when holding wheat
  - Added Shears (rightclick)
  - Items are only droped (without player action) with builtin_mod
+
+# 1.1.3
+ - Fixed crash caused by spawning control
+ - Prevent the mobs flood once and for all
+ - Drop items aswell when settings define max lifetime
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it

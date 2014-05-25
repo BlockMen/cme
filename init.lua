@@ -15,7 +15,9 @@ creatures.ANIM_RUN = 6
 -- Drop items (when not killed by player) only if items get removed
 creatures.drop_on_death = false
 local remove_items = minetest.setting_get("remove_items")
-if minetest.get_modpath("builtin_item") ~= nil and remove_items ~= nil and tonumber(remove_items) > 0 then
+local remove_items_2 = minetest.setting_get("item_entity_ttl")
+if minetest.get_modpath("builtin_item") ~= nil and ((remove_items ~= nil and tonumber(remove_items) > 0) or
+    (remove_items_2 ~= nil and tonumber(remove_items_2) > 0)) then
 	creatures.drop_on_death = true
 end
 
