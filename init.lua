@@ -60,7 +60,7 @@ function creatures.spawn(pos, number, mob, limit, range, abs_max)
 		local p = {x=pos.x+x,y=pos.y,z=pos.z+z}
 		if mobs+i <= limit and spawned+i < abs_max then
 			minetest.after(i/5,function()
-				local obj = minetest.env:add_entity(p, mob)
+				local obj = minetest.add_entity(p, mob)
 				if obj then
 					creatures.spawned[m_name] = spawned + 1
 					minetest.log("action", "Spawned "..mob.." at ("..pos.x..","..pos.y..","..pos.z..")")
@@ -97,7 +97,7 @@ function creatures.drop(pos, items, dir)
 			if node == nil or not node.name or node.name ~= "air" then
 				p = pos
 			end
-			local obj = minetest.env:add_item(p, {name=item.name})
+			local obj = minetest.add_item(p, {name=item.name})
 		end
 	end
 end
@@ -105,20 +105,20 @@ end
 function creatures.find_mates(pos, name, radius)
 	local player_near = false
 	local mobs = 0
-	for  _,obj in ipairs(minetest.env:get_objects_inside_radius(pos, radius)) do
+	local res = false
+	for  _,obj in ipairs(minetest.get_objects_inside_radius(pos, radius)) do
 		if obj:is_player() then
 			player_near = true 
 		else
 			local entity = obj:get_luaentity()
 			if entity and entity.mob_name and entity.mob_name == name then
-				mobs = mobs + 1 
+				mobs = mobs + 1
+				res = true
 			end
 		end
 	end
-	if mobs > 1 then
-		return true,mobs,player_near
-	end
-	return false,mobs,player_near
+
+	return res,mobs,player_near
 end
 
 function creatures.compare_pos(pos1,pos2)
