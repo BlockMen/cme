@@ -1,5 +1,10 @@
 creatures = {}
 
+-- Max number of mobs per mapblock
+creatures.zombie_max = 3
+creatures.ghost_max = 1
+creatures.sheep_max = 4
+
 creatures.ANIM_STAND = 1
 creatures.ANIM_SIT = 2
 creatures.ANIM_LAY = 3

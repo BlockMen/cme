@@ -1,3 +1,4 @@
+local max_mobs_sum = creatures.zombie_max + creatures.ghost_max + creatures.sheep_max - 1
 -- hostile mobs
 if not minetest.setting_getbool("only_peaceful_mobs") then
 	-- zombie
@@ -6,6 +7,10 @@ if not minetest.setting_getbool("only_peaceful_mobs") then
 		interval = 40.0,
 		chance = 7600,
 		action = function(pos, node, active_object_count, active_object_count_wider)
+			-- check per mapblock max (max per creature is done by .spawn())
+			if active_object_count_wider > max_mobs_sum then
+				return
+			end
 			local n = minetest.get_node_or_nil(pos)
 			--if n and n.name and n.name ~= "default:stone" and math.random(1,4)>3 then return end
 			pos.y = pos.y+1
@@ -35,6 +40,10 @@ if not minetest.setting_getbool("only_peaceful_mobs") then
 		interval = 44.0,
 		chance = 8350,
 		action = function(pos, node, active_object_count, active_object_count_wider)
+			-- check per mapblock max (max per creature is done by .spawn())
+			if active_object_count_wider > max_mobs_sum then
+				return
+			end
 			if pos.y < 0 then return end
 			pos.y = pos.y+1
 			local ll = minetest.env:get_node_light(pos)
@@ -69,6 +78,10 @@ minetest.register_abm({
 	interval = 55.0,
 	chance = 7800,
 	action = function(pos, node, active_object_count, active_object_count_wider)
+		-- check per mapblock max (max per creature is done by .spawn())
+		if active_object_count_wider > max_mobs_sum then
+			return
+		end
 		if pos.y < 0 then return end
 		pos.y = pos.y+1
 		local ll = minetest.env:get_node_light(pos) or 0
