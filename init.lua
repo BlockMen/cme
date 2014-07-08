@@ -161,7 +161,7 @@ function creatures.jump(self, pos, jump_y, timer)
 				def2 = minetest.registered_items[n2.name]
 			end
 			if def and def.walkable and def2 and not def2.walkable and not def.groups.fences and n.name ~= "default:fence_wood" then-- 
-				self.object:setvelocity({x=self.object:getvelocity().x,y=jump_y,z=self.object:getvelocity().z})
+				self.object:setvelocity({x=self.object:getvelocity().x*2.2,y=jump_y,z=self.object:getvelocity().z*2.2})
 			end
 		end
 	end
