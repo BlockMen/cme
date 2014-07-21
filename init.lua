@@ -59,13 +59,11 @@ function creatures.spawn(pos, number, mob, limit, range, abs_max)
 		local z = 1/math.random(1,3)
 		local p = {x=pos.x+x,y=pos.y,z=pos.z+z}
 		if mobs+i <= limit and spawned+i < abs_max then
-			minetest.after(i/5,function()
-				local obj = minetest.add_entity(p, mob)
-				if obj then
-					creatures.spawned[m_name] = spawned + 1
-					minetest.log("action", "Spawned "..mob.." at ("..pos.x..","..pos.y..","..pos.z..")")
-				end
-			end)
+			local obj = minetest.add_entity(p, mob)
+			if obj then
+				creatures.spawned[m_name] = spawned + 1
+				minetest.log("action", "Spawned "..mob.." at ("..pos.x..","..pos.y..","..pos.z..")")
+			end
 		end
 	end
 end

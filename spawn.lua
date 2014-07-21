@@ -4,6 +4,7 @@ if not minetest.setting_getbool("only_peaceful_mobs") then
 	-- zombie
 	minetest.register_abm({
 		nodenames = creatures.z_spawn_nodes,
+  		neighbors = {"air"},
 		interval = 40.0,
 		chance = 7600,
 		action = function(pos, node, active_object_count, active_object_count_wider)
@@ -37,6 +38,7 @@ if not minetest.setting_getbool("only_peaceful_mobs") then
 	-- ghost
 	minetest.register_abm({
 		nodenames = creatures.g_spawn_nodes,
+  		neighbors = {"air"},
 		interval = 44.0,
 		chance = 8350,
 		action = function(pos, node, active_object_count, active_object_count_wider)
@@ -75,6 +77,7 @@ end
 -- peaceful
 minetest.register_abm({
 	nodenames = creatures.s_spawn_nodes,
+  	neighbors = {"air"},
 	interval = 55.0,
 	chance = 7800,
 	action = function(pos, node, active_object_count, active_object_count_wider)
@@ -94,5 +97,5 @@ minetest.register_abm({
 			return
 		end
 		if math.random(1,10) > 8 then return end
-		creatures.spawn(pos, math.random(1,2), "creatures:sheep", 4, 50)
+		creatures.spawn(pos, math.random(1,2), "creatures:sheep", 4, 50, 30)
 	end})
