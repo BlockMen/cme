@@ -90,9 +90,6 @@ minetest.register_abm({
 		if minetest.env:get_node(pos).name ~= "air" then
 			return
 		end
-		if minetest.env:get_node(pos).name ~= "air" then
-			return
-		end
 		if (wtime < 0.2 and wtime > 0.805) then
 			return
 		end
