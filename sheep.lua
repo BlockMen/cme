@@ -5,6 +5,7 @@ local s_texture = {"creatures_sheep.png"}
 local s_hp = 8
 local s_life_max = 80 --~5min
 local s_drop = "wool:white"
+local s_drop2 = "creatures:flesh"
 
 local s_player_radius = 14
 
@@ -158,6 +159,9 @@ SHEEP_DEF.on_punch = function(self, puncher, time_from_last_punch, tool_capabili
 			self.has_wool = false
 			creatures.drop(my_pos, {{name=s_drop, count=math.random(1,2)}}, dir)
 		end
+		if self.object:get_hp() < 1 then
+			creatures.drop(my_pos, {{name=s_drop2, count=1}}, dir)
+		end
 	end
 
 end
@@ -204,9 +208,13 @@ SHEEP_DEF.on_step = function(self, dtime)
 		self.dead = true
 		minetest.sound_play(s_sound_dead, {pos = current_pos, max_hear_distance = 10, gain = 0.9})
 		self.object:set_animation({x=self.anim.lay_START,y=self.anim.lay_END}, s_animation_speed, 0)
-		minetest.after(1, function()
-			if self.has_wool and creatures.drop_on_death then		
-	    			local obj = minetest.env:add_item(current_pos, s_drop)
+		minetest.after(0.5, function()
+			if creatures.drop_on_death then
+				local drop = {{name=s_drop2, count=1}}
+				if self.has_wool then
+					drop[2] = {name=s_drop, count=math.random(1,2)}
+				end
+				creatures.drop(current_pos, drop, dir)
 			end
 			self.object:remove()
 		end)
@@ -214,7 +222,7 @@ SHEEP_DEF.on_step = function(self, dtime)
 
 	-- die if old and alone
 	if self.lifetime > s_life_max then
-		if creatures.find_mates(current_pos, "sheep", 12) then
+		if creatures.find_mates(current_pos, "sheep", 18) then
 			self.lifetime = 0
 		else
 			self.object:set_hp(0)
@@ -376,9 +384,9 @@ SHEEP_DEF.on_step = function(self, dtime)
 				self.timer = 0.45
 			end
 		 	minetest.after(1.8,function()
-			minetest.set_node(p,{name="default:dirt"})
-			self.has_wool = true
-		 end)
+				self.has_wool = true
+				minetest.set_node(p,{name="default:dirt"})
+			end)
 		end
 	end
 end
