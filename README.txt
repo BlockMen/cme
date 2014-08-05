@@ -2,7 +2,7 @@ Minetest mod "Creatures"
 =======================
 by BlockMen (c) 2014
 
-Version: 1.1.3 Beta
+Version: 1.1.4 Beta
 
 About
 ~~~~~
@@ -93,6 +93,12 @@ Changelog:
  - Fixed crash caused by spawning control
  - Prevent the mobs flood once and for all
  - Drop items aswell when settings define max lifetime
+
+# 1.1.4
+ - Fixed mobs flood (yes, really!)
+ - Sheep drop raw flesh on death
+ - Sheep are not stuck that often in valleys; spawning less
+ - Improved jumping of zombies and sheep
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it

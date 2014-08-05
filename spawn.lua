@@ -97,5 +97,5 @@ minetest.register_abm({
 			return
 		end
 		if math.random(1,10) > 8 then return end
-		creatures.spawn(pos, math.random(1,2), "creatures:sheep", 4, 50, 30)
+		creatures.spawn(pos, 1, "creatures:sheep", 4, 50, 30)
 	end})

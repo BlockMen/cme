@@ -222,7 +222,7 @@ SHEEP_DEF.on_step = function(self, dtime)
 
 	-- die if old and alone
 	if self.lifetime > s_life_max then
-		if creatures.find_mates(current_pos, "sheep", 18) then
+		if creatures.find_mates(current_pos, "sheep", 15) then
 			self.lifetime = 0
 		else
 			self.object:set_hp(0)

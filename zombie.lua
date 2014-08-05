@@ -327,7 +327,7 @@ ZOMBIE_DEF.on_step = function(self, dtime)
 		--jump
 		local p = current_pos
 		p.y = p.y-0.5
-		creatures.jump(self, p, 7.3, 0.25)
+		creatures.jump(self, p, 7.4, 0.25)
 
 		if self.attacker ~= "" and minetest.setting_getbool("enable_damage") then
 			local s = current_pos
