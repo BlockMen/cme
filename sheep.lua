@@ -36,7 +36,7 @@ function s_hit(self)
 	local sound = s_sound_hit
 	if self.object:get_hp() < 1 then sound = s_sound_dead end
 	minetest.sound_play(sound, {pos = self.object:getpos(), max_hear_distance = 10, loop = false, gain = 0.4})
-	prop = {
+	local prop = {
 		mesh = s_mesh,
 		textures = {self.txture[1].."^creatures_sheep_hit.png"},
 	}
@@ -52,7 +52,7 @@ function s_update_visuals_def(self)
 	if not self.has_wool then
 		self.txture = {"creatures_sheep_shaved.png"}
 	end
-	prop = {
+	local prop = {
 		mesh = s_mesh,
 		textures = self.txture,
 	}
