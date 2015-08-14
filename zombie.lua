@@ -36,19 +36,15 @@ function z_hit(self)
 	local sound = z_sound_hit
 	if self.object:get_hp() < 1 then sound = z_sound_dead end
 	minetest.sound_play(sound, {pos = self.object:getpos(), max_hear_distance = 10, loop = false, gain = 0.4})
-	prop = {
-		mesh = z_mesh,
-		textures = {"creatures_zombie.png^creatures_zombie_hit.png"},
-	}
-	self.object:set_properties(prop)
+	self.object:settexturemod("^[colorize:#c4000099")
 	self.can_punch = false
 	minetest.after(0.4, function()
-		z_update_visuals_def(self)
+		self.can_punch = true
+		self.object:settexturemod("")
 	end)
 end
 
-function z_update_visuals_def(self)
-	self.can_punch = true
+function z_init_visuals(self)
 	prop = {
 		mesh = z_mesh,
 		textures = z_texture,
@@ -92,7 +88,7 @@ ZOMBIE_DEF.get_staticdata = function(self)
 end
 
 ZOMBIE_DEF.on_activate = function(self, staticdata, dtime_s)
-	z_update_visuals_def(self)
+	z_init_visuals(self)
 	self.anim = z_get_animations()
 	self.object:set_animation({x=self.anim.stand_START,y=self.anim.stand_END}, z_animation_speed, 0)
 	self.npc_anim = ANIM_STAND
@@ -119,7 +115,6 @@ ZOMBIE_DEF.on_punch = function(self, puncher, time_from_last_punch, tool_capabil
 	if not self.can_punch then return end
 
 	local my_pos = self.object:getpos()
-
 	if puncher ~= nil then
 		self.attacker = puncher
 		if time_from_last_punch >= 0.45 then

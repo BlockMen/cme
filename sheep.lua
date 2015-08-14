@@ -27,30 +27,40 @@ local function s_get_animations()
 	}
 end
 
-local function s_eat_anim(self)
-	self.object:set_animation({x=self.anim.eat_START,y=self.anim.eat_END}, s_animation_speed, 0)
-	self.npc_anim = creatures.ANIM_EAT
+local function eat_cn(self, pos)
+	self.object:setvelocity({x=0,y=-20,z=0})
+	local p = {x=pos.x,y=pos.y-1,z=pos.z}
+	local n = minetest.get_node(p) or nil
+	if n and n.name and n.name == "default:dirt_with_grass" then
+		self.object:set_animation({x=self.anim.eat_START,y=self.anim.eat_END}, s_animation_speed, 0)
+		self.npc_anim = creatures.ANIM_EAT
+		self.timer = 0
+		minetest.after(3.5, function()
+			self.has_wool = true
+			self.state = 1
+			s_update_visuals(self)
+			minetest.set_node(p,{name="default:dirt"})
+		end)
+	end
 end
 
 function s_hit(self)
 	local sound = s_sound_hit
-	if self.object:get_hp() < 1 then sound = s_sound_dead end
+	if self.object:get_hp() < 1 then
+		sound = s_sound_dead 
+	end
 	minetest.sound_play(sound, {pos = self.object:getpos(), max_hear_distance = 10, loop = false, gain = 0.4})
-	local prop = {
-		mesh = s_mesh,
-		textures = {self.txture[1].."^creatures_sheep_hit.png"},
-	}
-	self.object:set_properties(prop)
+	s_update_visuals(self, "^[colorize:#c4000099")
 	self.can_punch = false
 	minetest.after(0.4, function()
-		s_update_visuals_def(self)
+		s_update_visuals(self)
 	end)
 end
 
-function s_update_visuals_def(self)
-	self.txture = {"creatures_sheep.png"}
+function s_update_visuals(self, hit)	
+	self.txture = {"creatures_sheep.png" .. (hit or "")}
 	if not self.has_wool then
-		self.txture = {"creatures_sheep_shaved.png"}
+		self.txture = {"creatures_sheep_shaved.png" .. (hit or "")}
 	end
 	local prop = {
 		mesh = s_mesh,
@@ -99,7 +109,7 @@ end
 
 SHEEP_DEF.on_activate = function(self, staticdata, dtime_s)
 	self.txture = s_texture
-	s_update_visuals_def(self)
+	s_update_visuals(self)
 	self.anim = s_get_animations()
 	self.object:set_animation({x=self.anim.stand_START,y=self.anim.stand_END}, s_animation_speed, 0)
 	self.npc_anim = ANIM_STAND
@@ -126,7 +136,7 @@ SHEEP_DEF.on_activate = function(self, staticdata, dtime_s)
 			self.lifetime = tmp.lifetime
 		end
 		if not self.has_wool then
-			s_update_visuals_def(self)
+			s_update_visuals(self)
 		end
 	end
 end
@@ -135,8 +145,6 @@ SHEEP_DEF.on_punch = function(self, puncher, time_from_last_punch, tool_capabili
 	if not self.can_punch then return end
 	
 	self.feeder = ""
-	--SET RUN state (panic)
-	self.state = 4
 	self.timer = 0
 
 	if puncher ~= nil then
@@ -178,7 +186,7 @@ SHEEP_DEF.on_rightclick = function(self, clicker)
 		minetest.sound_play(s_sound_shears, {pos = my_pos, max_hear_distance = 10, gain = 1})
 		my_pos.y = my_pos.y + 0.4
 		self.has_wool = false
-		s_update_visuals_def(self)
+		s_update_visuals(self)
 		creatures.drop(my_pos, {{name=s_drop, count=2}})
 		if not minetest.setting_getbool("creative_mode") then
 			item:add_wear(65535/100)
@@ -251,6 +259,10 @@ SHEEP_DEF.on_step = function(self, dtime)
 		end
 	 end
 
+	if self.state < 0 then
+		return
+	end
+
 	-- update moving state depending on current state
 	if self.state < 4 then
 		if self.timer > 4/self.state then
@@ -259,7 +271,7 @@ SHEEP_DEF.on_step = function(self, dtime)
 			--if self.state == 3 then new = 1 end
 			--if self.feeder == "" then new = 5 end
 			self.state = 5--new
-			s_update_visuals_def(self)
+			--s_update_visuals(self)
 		end
 	elseif self.state == 4 and self.timer > 1.5 then
 		self.state = 2
@@ -270,7 +282,6 @@ SHEEP_DEF.on_step = function(self, dtime)
 		if self.feeder ~= "" then new = 5 end
 		self.state = new
 		self.timer = 0
-		--s_update_visuals_def(self)	
 	end
 
 	-- play random sound
@@ -374,20 +385,9 @@ SHEEP_DEF.on_step = function(self, dtime)
 	end
 
 	-- EATING
-	if self.state == 3 then--and not self.has_wool then
-		self.object:setvelocity({x=0,y=-20,z=0})
-		local p = {x=current_pos.x,y=current_pos.y-1,z=current_pos.z}
-		local n = minetest.get_node(p) or nil
-		if n and n.name and n.name == "default:dirt_with_grass" then
-			if self.timer == 0 then 
-				s_eat_anim(self)
-				self.timer = 0.45
-			end
-		 	minetest.after(1.8,function()
-				self.has_wool = true
-				minetest.set_node(p,{name="default:dirt"})
-			end)
-		end
+	if self.state == 3 then
+		self.state = -1 -- deactivate most while eating
+		eat_cn(self, current_pos)
 	end
 end
 

@@ -25,19 +25,15 @@ function g_hit(self)
 	local sound = g_sound_hit
 	if self.object:get_hp() < 1 then sound = g_sound_dead end
 	minetest.sound_play(sound, {pos = self.object:getpos(), max_hear_distance = 10, loop = false, gain = 0.4})
-	prop = {
-		mesh = g_mesh,
-		textures = {"creatures_ghost.png^creatures_ghost_hit.png"},
-	}
-	self.object:set_properties(prop)
+	self.object:settexturemod("^[colorize:#c4000099")
 	self.can_punch = false
 	minetest.after(0.4, function()
-		g_update_visuals_def(self)
+		self.can_punch = true
+		self.object:settexturemod("")
 	end)
 end
 
-function g_update_visuals_def(self)
-	self.can_punch = true
+function g_init_visuals(self)
 	prop = {
 		mesh = g_mesh,
 		textures = g_texture,
@@ -74,7 +70,7 @@ GHOST_DEF = {
 
 
 GHOST_DEF.on_activate = function(self)
-	g_update_visuals_def(self)
+	g_init_visuals(self)
 	self.anim = g_get_animations()
 	self.object:set_animation({x=self.anim.stand_START,y=self.anim.stand_END}, g_animation_speed, 0)
 	self.npc_anim = ANIM_STAND
