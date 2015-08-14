@@ -1,8 +1,8 @@
 Minetest mod "Creatures"
 =======================
-by BlockMen (c) 2014
+by BlockMen (c) 2014 - 2015
 
-Version: 1.1.4 Beta
+Version: 1.1.5 Beta
 
 About
 ~~~~~
@@ -40,7 +40,7 @@ steel ingot  stick
 
 License of source code, textures and mesh model: WTFPL
 ------------------------------------------------------
-(c) Copyright BlockMen (2014)
+(c) Copyright BlockMen 2014 - 2015
 
 
 Licenses of sounds
@@ -99,6 +99,12 @@ Changelog:
  - Sheep drop raw flesh on death
  - Sheep are not stuck that often in valleys; spawning less
  - Improved jumping of zombies and sheep
+
+# 1.1.5
+ - Fixed global variable (by vitaminx)
+ - Added description.txt and screenshot (by ExcaliburZero)
+ - Fixed sounds (zombie and sheep)
+ - Using [colorize modifier instead of texture overlays
 
 This program is free software. It comes without any warranty, to
 the extent permitted by applicable law. You can redistribute it

@@ -1,0 +1,21 @@
+{
+    "name": "creatures",
+    "description": "This mod adds several creatures to Minetest, including zombies, ghosts, and sheep.\n",
+    "keywords": [
+        "creatures",
+        "mobs",
+        "zombies",
+        "sheep",
+        "ghost",
+        "monsters",
+        "hostile"
+    ],
+    "homepage": "https://github.com/BlockMen/creatures",
+    "forum": "http://forum.minetest.net/viewtopic.php?f=11&t=8638",
+    "screenshots": [
+        "https://raw.githubusercontent.com/BlockMen/creatures/master/screenshot.png"
+    ],
+    "authors": [
+        "BlockMen"
+    ]
+}
