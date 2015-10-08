@@ -1,1 +1,0 @@
-This mod adds several creatures to Minetest, including zombies, ghosts, and sheep.
