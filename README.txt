@@ -38,9 +38,12 @@ steel ingot  stick
 
 
 
-License of source code, textures and mesh model: WTFPL
-------------------------------------------------------
-(c) Copyright BlockMen 2014 - 2015
+License of source code: 
+-----------------------
+(c) Copyright BlockMen (2014-2015), modified zlib-License
+
+see "LICENSE.txt" for details.
+
 
 
 Licenses of sounds
@@ -61,7 +64,12 @@ following sound is created by Yuval (freesound.org)
 following sound is created by SmartWentCody (freesound.org)
 - creatures_shears.ogg,  CC-BY 3.0
 
-All other sounds (c) Copyright BlockMen (2014), CC-BY 3.0
+
+License of all other Media (textures, meshes/models, sounds):
+-------------------------------------------------------------
+(c) Copyright BlockMen (2014-2015), CC BY-SA 3.0
+
+
 
 Changelog:
 ----------
