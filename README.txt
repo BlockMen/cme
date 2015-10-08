@@ -1,5 +1,5 @@
-Creatures MOB-Engine
-====================
+Mod/Modpack Creatures
+=====================
 Copyright (c) 2015 BlockMen <blockmen2015@gmail.com>
 
 Version: 2.0 Beta
@@ -23,7 +23,7 @@ see each MOB-Module for detailed informations.
 
 Github:
 ~~~~~~~
-https://github.com/BlockMen/creatures_mob_engine
+https://github.com/BlockMen/cme
 
 
 Forum:
