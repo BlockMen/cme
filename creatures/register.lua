@@ -324,13 +324,9 @@ function creatures.register_spawn(spawn_def)
     chance = spawn_def.abm_chance or 7000,
     action = function(pos, node, active_object_count, active_object_count_wider)
       -- prevent abm-"feature"
-      if stopABMFlood() then
+      if stopABMFlood() == true then
         return
       end
-    --  if time_taker == 0 then
-    --    return
-    --  end
-    --  time_taker = 0
 
       -- time check
       local tod = core.get_timeofday() * 24000
@@ -341,14 +337,12 @@ function creatures.register_spawn(spawn_def)
           wanted_res = true
         end
         if inRange(range, tod) == wanted_res then
-          print(spawn_def.mob_name .. " - tod" .. dump(spawn_def.time_range) .. "  " .. dump(tod))
           return
         end
       end
 
       -- position check
       if spawn_def.height_limit and not inRange(spawn_def.height_limit, pos.y) then
-      print("height")
         return
       end
 
@@ -356,7 +350,6 @@ function creatures.register_spawn(spawn_def)
       pos.y = pos.y + 1
       local llvl = core.get_node_light(pos)
       if spawn_def.light and not inRange(spawn_def.light, llvl) then
-     print("light")
         return
       end
       -- creature count check
@@ -364,11 +357,9 @@ function creatures.register_spawn(spawn_def)
       if active_object_count_wider > (spawn_def.max_number or 1) then
         local mates_num = #creatures.findTarget(nil, pos, 16, "mate", spawn_def.mob_name, true)
         if (mates_num or 0) >= spawn_def.max_number then
-      --  print("too much")
           return
         else
           max = spawn_def.max_number - mates_num
-        --  return
         end
       end
 
@@ -396,7 +387,6 @@ function creatures.register_spawn(spawn_def)
         end
         core.add_entity(pos, spawn_def.mob_name)
       end
-      print("spawned " .. spawn_def.mob_name .. " " .. number .. "    ToD:"..tod)
     end,
   })
 
@@ -496,8 +486,11 @@ local function spawnerSpawn(pos, spawner_def)
       local walkable = core.registered_nodes[n.name].walkable or false
       p.y = p.y + 1
       if walkable and checkSpace(p, spawner_def.height) == true then
-        cnt = cnt + 1
-        core.add_entity(p, spawner_def.mob_name)
+        local llvl = core.get_node_light(p)
+        if not spawner_def.light or (spawner_def.light and inRange(spawner_def.light, llvl)) then
+          cnt = cnt + 1
+          core.add_entity(p, spawner_def.mob_name)
+        end
       end
     end
   end

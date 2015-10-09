@@ -71,15 +71,14 @@ local def = {
   },
 
   combat = {
-    attack_damage = 1, -- in hp
-    attack_speed = 0.6, -- time in seconds between hits
-    attack_radius = 1.1, -- radius of hit range
+    attack_damage = 1,
+    attack_speed = 0.6,
+    attack_radius = 1.1,
 
     search_enemy = true,
     search_timer = 2,
-    search_radius = 12, --in nodes
-    search_type = "player", --types = {all, hostile, nonhostile, player, mates}
-    --search_xray = false, -- can see through walls?
+    search_radius = 12,
+    search_type = "player",
   },
 
   spawning = {
@@ -89,21 +88,20 @@ local def = {
     },
     abm_interval = 36,
     abm_chance = 7600,
-    max_number = 1, -- per mapblock
+    max_number = 1,
     number = 2,
-    --time_range = {min = 18500, max = 4000}, -- 0-24000
     light = {min = 0, max = 8},
     height_limit = {min = -200, max = 50},
 
     spawn_egg = {
       description = "Zombie Spawn-Egg",
-      texture = "creatures_spawn_egg.png^[colorize:#2c9a",
+      texture = "creatures_egg_zombie.png",
     },
 
     spawner = {
-      range = 8, -- defines area withing mobs are spawned
-      number = 6, -- maxmimum number of mobs spawned in area defined via range
-      light = {min = 0, max = 8}, -- additional light check
+      range = 8,
+      number = 6,
+      light = {min = 0, max = 8},
     }
   },
 

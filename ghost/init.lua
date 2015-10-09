@@ -24,7 +24,7 @@ local def = {
   -- general
   name = "creatures:ghost",
   stats = {
-    hp = 20,
+    hp = 12,
     lifetime = 300, -- 5 Minutes
     can_burn = true,
 		can_fly = true,
@@ -65,15 +65,14 @@ local def = {
   },
 
   combat = {
-    attack_damage = 2, -- in hp
-    attack_speed = 1.1, -- time in seconds between hits
-    attack_radius = 0.9, -- radius of hit range
+    attack_damage = 2,
+    attack_speed = 1.1,
+    attack_radius = 0.9,
 
     search_enemy = true,
     search_timer = 2,
-    search_radius = 12, --in nodes
-    search_type = "player", --types = {all, hostile, nonhostile, player, mates}
-    --search_xray = false, -- can see through walls?
+    search_radius = 12,
+    search_type = "player",
   },
 
   spawning = {
@@ -83,21 +82,21 @@ local def = {
     },
     abm_interval = 40,
     abm_chance = 7300,
-    max_number = 1, -- per mapblock
+    max_number = 1,
     number = 1,
-    time_range = {min = 18500, max = 4000}, -- 0-24000
+    time_range = {min = 18500, max = 4000},
     light = {min = 0, max = 8},
     height_limit = {min = 0, max = 80},
 
     spawn_egg = {
       description = "Ghost Spawn-Egg",
-      texture = "creatures_spawn_egg.png^[colorize:#27ca",
+      texture = "creatures_egg_ghost.png",
     },
 
     spawner = {
-      range = 8, -- defines area withing mobs are spawned
-      number = 6, -- maxmimum number of mobs spawned in area defined via range
-      light = {min = 0, max = 8}, -- additional light check
+      range = 8,
+      number = 6,
+      light = {min = 0, max = 8},
     }
   },
 

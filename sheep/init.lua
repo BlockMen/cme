@@ -113,9 +113,9 @@ local def = {
     },
     abm_interval = 55,
     abm_chance = 7800,
-    max_number = 1, -- per mapblock(16x16x16)
+    max_number = 1,
     number = {min = 1, max = 3},
-    time_range = {min = 5100, max = 18300}, -- 0-24000
+    time_range = {min = 5100, max = 18300},
     light = {min = 10, max = 15},
     height_limit = {min = 0, max = 25},
 
@@ -124,12 +124,12 @@ local def = {
       texture = "creatures_egg_sheep.png",
     },
 
-    spawner = {
-      range = 8, -- defines area withing mobs are spawned
-      player_range = 20, -- defines at what distance spawner gets activated
-      number = 6, -- maxmimum number of mobs spawned in area defined via range
-      light = {min = 2, max = 15}, -- additional light check
-    }
+    --[[spawner = {
+      range = 8,
+      player_range = 20,
+      number = 6,
+      light = {min = 2, max = 15},
+    }]]
   },
 
   on_punch = function(self, puncher)
