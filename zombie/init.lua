@@ -42,7 +42,7 @@ local def = {
   },
 
   modes = {
-    idle = {chance = 0.7, duration = 3, update_yaw = 6},--dur = 8 is gut
+    idle = {chance = 0.7, duration = 3, update_yaw = 6},
     walk = {chance = 0.3, duration = 5.5, moving_speed = 1.5},
     -- special modes
     attack = {chance = 0, moving_speed = 2.5},
@@ -55,9 +55,9 @@ local def = {
     rotation = -90.0,
     animations = {
       idle = {start = 0, stop = 80, speed = 15},
-      walk = {start = 168, stop = 188, speed = 15.5},
+      walk = {start = 102, stop = 122, speed = 15.5},
       attack = {start = 168, stop = 188, speed = 25},
-      -- death
+      death = {start = 81, stop = 101, speed = 25, loop = false, duration = 1.92},
     },
   },
 
