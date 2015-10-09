@@ -156,6 +156,9 @@ local def = {
           self.target = clicker
           self.mode = "follow"
           self.modetimer = 0
+					if not self.tamed then
+						self.fed_cnt = (self.fed_cnt or 0) + 1
+					end
           -- play eat sound?
           item:take_item()
         elseif name == "creatures:shears" and self.has_wool then
@@ -182,6 +185,10 @@ local def = {
       self.regrow_wool = nil
       self.object:set_properties({textures = {"creatures_sheep.png"}})
     end
+		if self.fed_cnt and self.fed_cnt > 4 then
+			self.tamed = true
+			self.fed_cnt = nil
+		end
   end
 }
 
