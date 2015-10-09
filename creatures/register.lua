@@ -174,6 +174,8 @@ local function translate_def(def)
       self.hostile = false
     end
 
+    -- immortal is needed to disable clientside smokepuff shit
+    self.object:set_armor_groups({fleshy = 100, immortal = 1})
 
     -- call custom on_activate if defined
     if def.on_activate then

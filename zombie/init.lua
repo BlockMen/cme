@@ -56,8 +56,8 @@ local def = {
     animations = {
       idle = {start = 0, stop = 80, speed = 15},
       walk = {start = 102, stop = 122, speed = 15.5},
-      attack = {start = 168, stop = 188, speed = 25},
-      death = {start = 81, stop = 101, speed = 25, loop = false, duration = 1.92},
+      attack = {start = 102, stop = 122, speed = 25},
+      death = {start = 81, stop = 101, speed = 28, loop = false, duration = 2.12},
     },
   },
 

@@ -122,6 +122,7 @@ local function killMob(me, def)
   end
   local pos = me:getpos()
   me:setvelocity(nullVec)
+  me:set_properties({collisionbox = nullVec})
   me:set_hp(0)
 
   if def.sounds and def.sounds.on_death then
@@ -147,6 +148,28 @@ local function killMob(me, def)
   end
 end
 
+local function limit(value, min, max)
+  if value < min then
+    return min
+  end
+  if value > max then
+    return max
+  end
+  return value
+end
+
+local function calcPunchDamage(obj, actual_interval, tool_caps)
+  local damage = 0
+  if not tool_caps or not actual_interval then
+    return 0
+  end
+  local my_armor = obj:get_armor_groups() or {}
+  for group,_ in pairs(tool_caps.damage_groups) do
+    damage = damage + (tool_caps.damage_groups[group] or 0) * limit(actual_interval / tool_caps.full_punch_interval, 0.0, 1.0) * ((my_armor[group] or 0) / 100.0)
+  end
+  return (damage * -1)
+end
+
 local function onDamage(self, hp)
   local me = self.object
   local def = core.registered_entities[self.mob_name]
@@ -168,8 +191,8 @@ local function changeHP(self, value)
   local me = self.object
   local hp = me:get_hp()
   hp = hp + math.floor(value)
+  me:set_hp(hp)
   if value < 0 then
-    me:set_hp(hp)
     onDamage(self, hp)
   end
 end
@@ -235,6 +258,8 @@ creatures.on_punch = function(self, puncher, time_from_last_punch, tool_capabili
 
   local me = self.object
   local mypos = me:getpos()
+
+  changeHP(self, calcPunchDamage(me, time_from_last_punch, tool_capabilities))
   if puncher then
     if self.hostile then
       self.target = puncher
@@ -252,14 +277,11 @@ creatures.on_punch = function(self, puncher, time_from_last_punch, tool_capabili
 
       -- add wearout to weapons/tools
       addWearout(puncher, tool_capabilities)
-      onDamage(self)
     end
   end
 end
 
 creatures.on_rightclick = function(self, clicker)
-  -- do sth
-  core.chat_send_all("Hey, i got clicked!")
 end
 
 creatures.on_step = function(self, dtime)
