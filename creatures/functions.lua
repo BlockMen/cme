@@ -167,7 +167,7 @@ local function calcPunchDamage(obj, actual_interval, tool_caps)
   for group,_ in pairs(tool_caps.damage_groups) do
     damage = damage + (tool_caps.damage_groups[group] or 0) * limit(actual_interval / tool_caps.full_punch_interval, 0.0, 1.0) * ((my_armor[group] or 0) / 100.0)
   end
-  return (damage * -1)
+  return damage or 0
 end
 
 local function onDamage(self, hp)
@@ -259,9 +259,10 @@ creatures.on_punch = function(self, puncher, time_from_last_punch, tool_capabili
   local me = self.object
   local mypos = me:getpos()
 
-  changeHP(self, calcPunchDamage(me, time_from_last_punch, tool_capabilities))
+  changeHP(self, calcPunchDamage(me, time_from_last_punch, tool_capabilities) * -1)
   if puncher then
     if self.hostile then
+      self.mode = "attack"
       self.target = puncher
     end
     if time_from_last_punch >= 0.45 and self.stunned == false then
