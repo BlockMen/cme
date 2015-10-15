@@ -49,7 +49,7 @@ local def = {
   },
 
   model = {
-    mesh = "zombie.b3d",
+    mesh = "creatures_zombie.b3d",
     textures = {"creatures_zombie.png"},
     collisionbox = {-0.25, -0.01, -0.3, 0.25, 1.75, 0.3},
     rotation = -90.0,
