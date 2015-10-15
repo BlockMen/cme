@@ -42,7 +42,7 @@ local function shear(self, drop_count, sound)
     if sound then
       core.sound_play("creatures_shears", {pos = pos, gain = 1, max_hear_distance = 10})
     end
-    self.object:set_properties({textures = {"creatures_sheep_shaved.png"}})
+    self.object:set_properties({textures = {"creatures_sheep.png"}})
     creatures.dropItems(pos, {{"wool:white", drop_count}})
   end
 end
@@ -61,24 +61,24 @@ local def = {
   },
 
   model = {
-    mesh = "creatures_sheep.x",
-    textures = {"creatures_sheep.png"},
+    mesh = "creatures_sheep.b3d",
+    textures = {"creatures_sheep.png^creatures_sheep_white.png"},
     collisionbox = {-0.5, -0.01, -0.55, 0.5, 1.1, 0.55},
     rotation = -90.0,
     animations = {
-      idle = {start = 0, stop = 80, speed = 15},
-      walk = {start = 81, stop = 100, speed = 18},
-      walk_long = {start = 81, stop = 100, speed = 18},
-      eat = {start = 107, stop = 185, speed = 12, loop = false},
-      follow = {start = 81, stop = 100, speed = 15},
-      --death = {start = 0, stop = 80, speed = 15, loop = false, duration = 1},
+      idle = {start = 1, stop = 60, speed = 15},
+      walk = {start = 81, stop = 101, speed = 18},
+      walk_long = {start = 81, stop = 101, speed = 18},
+      eat = {start = 107, stop = 170, speed = 12, loop = false},
+      follow = {start = 81, stop = 101, speed = 15},
+      death = {start = 171, stop = 191, speed = 32, loop = false, duration = 2.52},
     },
   },
 
   sounds = {
       on_damage = {name = "creatures_sheep", gain = 1.0, distance = 10},
-      on_death = {},
-      swim = {name = "creatures_splash", gain = 1.0, distance = 10,}, -- played whenever moving in(to) water
+      on_death = {name = "creatures_sheep", gain = 1.0, distance = 10},
+      swim = {name = "creatures_splash", gain = 1.0, distance = 10,},
       random = {
         idle = {name = "creatures_sheep", gain = 0.6, distance = 10, time_min = 23},
       },
@@ -144,7 +144,7 @@ local def = {
 
   on_activate = function(self, staticdata)
     if self.has_wool == false then
-      self.object:set_properties({textures = {"creatures_sheep_shaved.png"}})
+      self.object:set_properties({textures = {"creatures_sheep.png"}})
     end
   end,
 
@@ -156,9 +156,10 @@ local def = {
           self.target = clicker
           self.mode = "follow"
           self.modetimer = 0
-					if not self.tamed then
-						self.fed_cnt = (self.fed_cnt or 0) + 1
-					end
+					
+	  if not self.tamed then
+	      self.fed_cnt = (self.fed_cnt or 0) + 1
+	  end
           -- play eat sound?
           item:take_item()
         elseif name == "creatures:shears" and self.has_wool then
@@ -183,7 +184,7 @@ local def = {
     if self.last_mode == "eat" and self.modetimer == 0 and self.regrow_wool then
       self.has_wool = true
       self.regrow_wool = nil
-      self.object:set_properties({textures = {"creatures_sheep.png"}})
+      self.object:set_properties({textures = {"creatures_sheep.png^creatures_sheep_white.png"}})
     end
 		if self.fed_cnt and self.fed_cnt > 4 then
 			self.tamed = true

@@ -27,7 +27,7 @@ local def = {
     hp = 12,
     lifetime = 300, -- 5 Minutes
     can_burn = true,
-		can_fly = true,
+    can_fly = true,
     has_falldamage = false,
     has_kockback = true,
     light = {min = 0, max = 8},
@@ -43,16 +43,16 @@ local def = {
   },
 
   model = {
-    mesh = "ghost.b3d",
+    mesh = "creatures_ghost.b3d",
     textures = {"creatures_ghost.png"},
-    collisionbox = {-0.25, 0.2, -0.3, 0.25, 1.4, 0.3},
+    collisionbox = {-0.25, 0, -0.3, 0.25, 1.3, 0.3},
     rotation = -90.0,
     animations = {
       idle = {start = 0, stop = 80, speed = 15},
-      fly = {start = 168, stop = 188, speed = 12},
-      fly_2 = {start = 168, stop = 188, speed = 10},
-      attack = {start = 168, stop = 188, speed = 25},
-      -- death
+      fly = {start = 102, stop = 122, speed = 12},
+      fly_2 = {start = 102, stop = 122, speed = 10},
+      attack = {start = 102, stop = 122, speed = 25},
+      death = {start = 81, stop = 101, speed = 28, loop = false, duration = 1.32},
     },
   },
 
