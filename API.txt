@@ -120,6 +120,17 @@ and with a chance of 100% 2 items of type "default:stone"
   drops = {#ItemDrops},     -- see #ItemDrops definition <optional>
     ^ can also be a function; receives "self" reference
 
+  combat = {              -- specifies behavior of hostile mobs in "attack" mode
+    attack_damage = 1,       -- how much damage deals each hit
+    attack_speed = 0.6,      -- time in seconds between hits
+    attack_radius = 1.1,     -- distance in blocks mob can reach to hit
+
+    search_enemy = true,     -- true to search enemies to attack
+    search_timer = 2,        -- time in seconds to search an enemy (only if none found yet)
+    search_radius = 12,      -- radius in blocks within enemies are searched
+    search_type = "player",  -- what enemy is being searched (see types at creatures.findTarget())
+  }
+
   spawning = {                  -- defines spawning in world <optional>
     abm_nodes = {
       spawn_on = {<table>},     -- on what nodes mob can spawn <optional>
