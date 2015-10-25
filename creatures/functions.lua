@@ -20,6 +20,10 @@
 --
 
 
+-- Localizations
+local rnd = math.random
+
+
 local function knockback(selfOrObject, dir, old_dir, strengh)
   local object = selfOrObject
   if selfOrObject.mob_name then
@@ -99,7 +103,7 @@ local function update_velocity(obj_ref, dir, speed, add)
 end
 
 local function getYaw(dirOrYaw)
-  local yaw = 360 * math.random()
+  local yaw = 360 * rnd()
   if dirOrYaw and type(dirOrYaw) == "table" then
     yaw = math.atan(dirOrYaw.z / dirOrYaw.x) + math.pi^2 - 2
     if dirOrYaw.x > 0 then
@@ -330,6 +334,8 @@ creatures.on_step = function(self, dtime)
 
 
   -- localize some things
+  local modes = def.modes
+  local current_mode = self.mode
   local me = self.object
   local current_pos = me:getpos()
   current_pos.y = current_pos.y + 0.5
@@ -361,10 +367,10 @@ creatures.on_step = function(self, dtime)
       end
     end
   else
-    if (def.modes[self.mode].moving_speed or 0) > 0 then
+    if (modes[current_mode].moving_speed or 0) > 0 then
       update_velocity(me, nullVec, 0)
-      if def.modes["idle"] and not (self.mode == "attack" or self.mode == "follow") then
-        self.mode = "idle"
+      if modes["idle"] and not (current_mode == "attack" or current_mode == "follow") then
+        current_mode = "idle"
         self.modetimer = 0
       end
     end
@@ -400,18 +406,18 @@ creatures.on_step = function(self, dtime)
     local dir = getDir(current_pos, p2)
     local offset
     if self.can_fly then
-      offset = def.modes["fly"].target_offset
+      offset = modes["fly"].target_offset
     end
     local dist = getDistance(dir, offset)
     local radius
     if self.hostile and def.combat then
       radius = def.combat.search_radius
-    elseif def.modes["follow"] then
-      radius = def.modes["follow"].radius
+    elseif modes["follow"] then
+      radius = modes["follow"].radius
     end
     if dist == -1 or dist > (radius or 5) then
       self.target = nil
-      self.mode = ""
+      current_mode = ""
     elseif dist > -1 and self.hostile and dist < def.combat.attack_radius then
       -- attack
       if self.attacktimer > def.combat.attack_speed then
@@ -425,24 +431,24 @@ creatures.on_step = function(self, dtime)
         update_velocity(me, self.dir, 0)
       end
     else
-      if self.mode == "attack" or self.mode == "follow" then
+      if current_mode == "attack" or current_mode == "follow" then
         self.dir = vector.normalize(dir)
         me:setyaw(getYaw(dir))
         if self.in_water then
           self.dir.y = me:getvelocity().y
         end
-        update_velocity(me, self.dir, def.modes[self.mode].moving_speed or 0)
+        update_velocity(me, self.dir, modes[current_mode].moving_speed or 0)
       end
     end
   end
 
   -- search a target (1-2ms)
-  if not self.target and ((self.hostile and def.combat.search_enemy) or def.modes["follow"]) then
+  if not self.target and ((self.hostile and def.combat.search_enemy) or modes["follow"]) then
     local timer
     if self.hostile then
       timer = def.combat.search_timer or 2
-    elseif def.modes["follow"] then
-      timer = def.modes["follow"].timer
+    elseif modes["follow"] then
+      timer = modes["follow"].timer
     end
     if self.searchtimer > (timer or 4) then
       self.searchtimer = 0
@@ -450,20 +456,20 @@ creatures.on_step = function(self, dtime)
       if self.hostile then
         targets = findTarget(me, current_pos, def.combat.search_radius, def.combat.search_type, def.combat.search_xray)
       else
-        targets = findTarget(me, current_pos, def.modes["follow"].radius or 5, "player")
+        targets = findTarget(me, current_pos, modes["follow"].radius or 5, "player")
       end
       if #targets > 1 then
-        self.target = targets[math.random(1, #targets)]
+        self.target = targets[rnd(1, #targets)]
       elseif #targets == 1 then
         self.target = targets[1]
       end
       if self.target then
-        if self.hostile and def.modes["attack"] then
-          self.mode = "attack"
+        if self.hostile and modes["attack"] then
+          current_mode = "attack"
         else
           local name = self.target:get_wielded_item():get_name()
-          if name and checkWielded(name, def.modes["follow"].items) == true then
-            self.mode = "follow"
+          if name and checkWielded(name, modes["follow"].items) == true then
+            current_mode = "follow"
             self.modetimer = 0
           else
             self.target = nil
@@ -473,8 +479,8 @@ creatures.on_step = function(self, dtime)
     end
   end
 
-  if self.mode == "eat" and not self.eat_node then
-    local nodes = def.modes[self.mode].nodes
+  if current_mode == "eat" and not self.eat_node then
+    local nodes = modes[current_mode].nodes
     local p = {x = current_pos.x, y = current_pos.y - 1, z = current_pos.z}
     local sn = core.get_node_or_nil(p)
     local eat_node
@@ -489,7 +495,7 @@ creatures.on_step = function(self, dtime)
     end
 
     if not eat_node then
-      self.mode = "idle"
+      current_mode = "idle"
     else
       self.eat_node = eat_node
     end
@@ -498,22 +504,22 @@ creatures.on_step = function(self, dtime)
 
   -- further mode handling
   -- update mode
-  if self.mode ~= "attack" and
-      (self.mode == "" or self.modetimer > (def.modes[self.mode].duration or 4)) then
+  if current_mode ~= "attack" and
+      (current_mode == "" or self.modetimer > (modes[current_mode].duration or 4)) then
     self.modetimer = 0
 
-    local new_mode = creatures.rnd(def.modes) or "idle"
+    local new_mode = creatures.rnd(modes) or "idle"
     if new_mode == "eat" and self.in_water == true then
       new_mode = "idle"
     end
-    if self.mode == "follow" and math.random(1, 10) < 3 then
-      new_mode = self.mode
-    elseif self.mode == "follow" then
+    if current_mode == "follow" and rnd(1, 10) < 3 then
+      new_mode = current_mode
+    elseif current_mode == "follow" then
       -- "lock" searching a little bit
-      self.searchtimer = math.random(5, 8) * -1
+      self.searchtimer = rnd(5, 8) * -1
       self.target = nil
     end
-    self.mode = new_mode
+    current_mode = new_mode
 
     -- change eaten node when mode changes
     if self.eat_node then
@@ -542,19 +548,19 @@ creatures.on_step = function(self, dtime)
   end
 
   -- mode has changes, do things
-  if self.mode ~= self.last_mode then
-    self.last_mode = self.mode
+  if current_mode ~= self.last_mode then
+    self.last_mode = current_mode
 
-    local moving_speed = def.modes[self.mode].moving_speed or 0
+    local moving_speed = modes[current_mode].moving_speed or 0
     if moving_speed > 0 then
       local yaw = (getYaw(me:getyaw()) + 90.0) * DEGTORAD
       me:setyaw(yaw + 4.73)
       self.dir = {x = math.cos(yaw), y = 0, z = math.sin(yaw)}
       if self.can_fly then
-        if current_pos.y >= (def.modes["fly"].max_height or 50) and not self.target then
+        if current_pos.y >= (modes["fly"].max_height or 50) and not self.target then
           self.dir.y = -0.5
         else
-          self.dir.y = (math.random() - 0.5) --*0.1
+          self.dir.y = (rnd() - 0.5) --*0.1
         end
       end
 
@@ -567,21 +573,21 @@ creatures.on_step = function(self, dtime)
     end
 
     update_velocity(me, self.dir, moving_speed)
-    update_animation(me, self.mode, def.model.animations)
+    update_animation(me, current_mode, def.model.animations)
   end
 
   -- update yaw
-  if self.mode ~= "attack" and self.mode ~= "follow" and
-      (def.modes[self.mode].update_yaw or 0) > 0 and
-      self.yawtimer > (def.modes[self.mode].update_yaw or 4) then
+  if current_mode ~= "attack" and current_mode ~= "follow" and
+      (modes[current_mode].update_yaw or 0) > 0 and
+      self.yawtimer > (modes[current_mode].update_yaw or 4) then
     self.yawtimer = 0
     local mod = nil
-    if self.mode == "_run" then
+    if current_mode == "_run" then
       mod = me:getyaw()
     end
     local yaw = (getYaw(mod) + 90.0) * DEGTORAD
     me:setyaw(yaw + 4.73)
-    local moving_speed = def.modes[self.mode].moving_speed or 0
+    local moving_speed = modes[current_mode].moving_speed or 0
     if moving_speed > 0 then
       self.dir = {x = math.cos(yaw), y = nil, z = math.sin(yaw)}
       update_velocity(me, self.dir, moving_speed)
@@ -639,17 +645,19 @@ creatures.on_step = function(self, dtime)
   end
 
   -- Random sounds
-  if def.sounds and def.sounds.random[self.mode] then
-    local rnd_sound = def.sounds.random[self.mode]
+  if def.sounds and def.sounds.random[current_mode] then
+    local rnd_sound = def.sounds.random[current_mode]
     if not self.snd_rnd_time then
-      self.snd_rnd_time = math.random((rnd_sound.time_min or 5), (rnd_sound.time_max or 35))
+      self.snd_rnd_time = rnd((rnd_sound.time_min or 5), (rnd_sound.time_max or 35))
     end
-    if rnd_sound and self.soundtimer > self.snd_rnd_time + math.random() then
+    if rnd_sound and self.soundtimer > self.snd_rnd_time + rnd() then
       self.soundtimer = 0
       self.snd_rnd_time = nil
       core.sound_play(rnd_sound.name, {pos = current_pos, gain = rnd_sound.gain or 1, max_hear_distance = rnd_sound.distance or 30})
     end
   end
+
+  self.mode = current_mode
 end
 
 
