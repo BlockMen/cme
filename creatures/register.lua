@@ -33,6 +33,7 @@ local function translate_def(def)
   	textures = def.model.textures,
   	collisionbox = def.model.collisionbox or {-0.5, -0.5, -0.5, 0.5, 0.5, 0.5},
   	visual_size = def.model.scale or {x = 1, y = 1},
+    backface_culling = def.model.backface_culling or false
 
     stats = def.stats,
     model = def.model,

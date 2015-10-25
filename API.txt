@@ -100,6 +100,7 @@ and with a chance of 100% 2 items of type "default:stone"
     textures = {"creatures_sheep.png"},  -- table of textures; see Minetest Documentation
     collisionbox = <NodeBox>,            -- defines mesh collision box; see Minetest Documentation
     rotation = 0.0,                      -- sets rotation offset when moving
+    backface_culling = false,            -- set true to enable backface culling
     animations = {                       -- animation used if defined <optional>
       idle = {#AnimationDef},            -- see #AnimationDef
         ... -- depends on modes (must correspond to be used); supported "special modes": eat, follow, attack
