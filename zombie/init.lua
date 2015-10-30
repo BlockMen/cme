@@ -99,6 +99,7 @@ local def = {
     },
 
     spawner = {
+      description = "Zombie Spawner",
       range = 8,
       number = 6,
       light = {min = 0, max = 8},

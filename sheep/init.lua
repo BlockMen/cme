@@ -125,6 +125,7 @@ local def = {
     },
 
     --[[spawner = {
+      description = "Sheep Spawner",
       range = 8,
       player_range = 20,
       number = 6,
@@ -156,7 +157,7 @@ local def = {
           self.target = clicker
           self.mode = "follow"
           self.modetimer = 0
-					
+
 	  if not self.tamed then
 	      self.fed_cnt = (self.fed_cnt or 0) + 1
 	  end

@@ -35,7 +35,7 @@ local def = {
   },
 
   modes = {
-    idle = {chance = 0.65, duration = 3, update_yaw = 6},--dur = 8 is gut
+    idle = {chance = 0.65, duration = 3, update_yaw = 6},
     fly = {chance = 0.25, duration = 2.5, moving_speed = 2, max_height = 25, target_offset = 2.1},
     fly_2 = {chance = 0.1, duration = 4, moving_speed = 1.6, update_yaw = 3, max_height = 25, target_offset = 2.5},
     -- special modes
@@ -94,6 +94,7 @@ local def = {
     },
 
     spawner = {
+      description = "Ghost Spawner",
       range = 8,
       number = 6,
       light = {min = 0, max = 8},
