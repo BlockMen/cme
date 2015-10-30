@@ -31,7 +31,7 @@ local function knockback(selfOrObject, dir, old_dir, strengh)
   end
   object:set_properties({automatic_face_movement_dir = false})
   object:setvelocity(vector.add(old_dir, {x = dir.x * strengh, y = 3.5, z = dir.z * strengh}))
-  old_dir.y = 0---10
+  old_dir.y = 0
   core.after(0.4, function()
     object:set_properties({automatic_face_movement_dir = -90.0})
     object:setvelocity(old_dir)
@@ -77,16 +77,9 @@ end
 
 local findTarget = creatures.findTarget
 
-local function update_animation(obj_ref, mode, anim_defs)
-  local anim = nil
-  for mn,range in pairs(anim_defs) do
-    if tostring(mn) == mode then
-      anim = range
-      break
-    end
-  end
-  if anim and obj_ref then
-    obj_ref:set_animation({x = anim.start, y = anim.stop}, anim.speed, 0, anim.loop)
+local function update_animation(obj_ref, mode, anim_def)
+  if anim_def and obj_ref then
+    obj_ref:set_animation({x = anim_def.start, y = anim_def.stop}, anim_def.speed, 0, anim_def.loop)
   end
 end
 
@@ -560,7 +553,7 @@ creatures.on_step = function(self, dtime)
         if current_pos.y >= (modes["fly"].max_height or 50) and not self.target then
           self.dir.y = -0.5
         else
-          self.dir.y = (rnd() - 0.5) --*0.1
+          self.dir.y = (rnd() - 0.5)
         end
       end
 
@@ -573,7 +566,11 @@ creatures.on_step = function(self, dtime)
     end
 
     update_velocity(me, self.dir, moving_speed)
-    update_animation(me, current_mode, def.model.animations)
+    local anim_def = def.model.animations[current_mode]
+    if self.in_water and def.model.animations["swim"] then
+      anim_def = def.model.animations["swim"]
+    end
+    update_animation(me, current_mode, anim_def)
   end
 
   -- update yaw

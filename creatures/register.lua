@@ -58,10 +58,16 @@ local function translate_def(def)
       new.chance = 0
       new.duration = 3
       new.moving_speed = new.moving_speed * 2
+      if def.modes.panic and def.modes.panic.moving_speed then
+        new.moving_speed = def.modes.panic.moving_speed
+      end
       new.update_yaw = 0.7
       new_def.modes["_run"] = new
-      local new_anim = table.copy(def.model.animations.walk)
-      new_anim.speed = new_anim.speed * 2 --= {start = 81, stop = 100, speed = 15},
+      local new_anim = def.model.animations.panic
+      if not new_anim then
+        new_anim = table.copy(def.model.animations.walk)
+        new_anim.speed = new_anim.speed * 2
+      end
       new_def.model.animations._run = new_anim
     end
   end
