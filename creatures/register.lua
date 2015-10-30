@@ -424,7 +424,7 @@ function creatures.register_egg(egg_def)
   end
 
   core.register_craftitem(":" .. egg_def.mob_name .. "_spawn_egg", {
-    description = egg_def.description,
+    description = egg_def.description or egg_def.mob_name .. " spawn egg",
     inventory_image = egg_def.texture,
     liquids_pointable = false,
     on_place = function(itemstack, placer, pointed_thing)
@@ -516,7 +516,7 @@ function creatures.register_spawner(spawner_def)
   makeSpawnerEntiy(spawner_def.mob_name, spawner_def.model)
 
   core.register_node(":" .. spawner_def.mob_name .. "_spawner", {
-    description = spawner_def.mob_name .. " spawner",
+    description = spawner_def.description or spawner_def.mob_name .. " spawner",
   	paramtype = "light",
   	tiles = {"creatures_spawner.png"},
   	is_ground_content = true,

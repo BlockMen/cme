@@ -103,7 +103,8 @@ and with a chance of 100% 2 items of type "default:stone"
     backface_culling = false,            -- set true to enable backface culling
     animations = {                       -- animation used if defined <optional>
       idle = {#AnimationDef},            -- see #AnimationDef
-        ... -- depends on modes (must correspond to be used); supported "special modes": eat, follow, attack
+        ... -- depends on modes (must correspond to be used);
+              ^ supported "special modes": eat, follow, attack, death, swim, panic
     },
   },
 
@@ -158,6 +159,7 @@ and with a chance of 100% 2 items of type "default:stone"
     spawner = {          -- is set a spawner_node is added to creative inventory <optional>
       range = <number>,  -- defines an area (in blocks/nodes) within mobs are spawned
       number = <number>, -- maxmimum number of mobs spawned in area defined via range
+      description = <desc>, -- Item description as string <optional>
       light = <range>,   -- min and max lightvalue at spawn position <optional>
         ^ range  -- table {min = <value>, max = <value>}
     }
