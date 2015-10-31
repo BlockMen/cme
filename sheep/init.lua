@@ -124,12 +124,12 @@ local def = {
       texture = "creatures_egg_sheep.png",
     },
 
-    --[[spawner = {
+    spawner = {
       range = 8,
       player_range = 20,
       number = 6,
       light = {min = 2, max = 15},
-    }]]
+    }
   },
 
   on_punch = function(self, puncher)
