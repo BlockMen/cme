@@ -425,7 +425,7 @@ function creatures.register_egg(egg_def)
 
   core.register_craftitem(":" .. egg_def.mob_name .. "_spawn_egg", {
     description = egg_def.description or egg_def.mob_name .. " spawn egg",
-    inventory_image = egg_def.texture,
+    inventory_image = egg_def.texture or "creatures_spawn_egg.png",
     liquids_pointable = false,
     on_place = function(itemstack, placer, pointed_thing)
       eggSpawn(itemstack, placer, pointed_thing, egg_def)

@@ -129,7 +129,7 @@ local function killMob(me, def)
 
   if def.model.animations.death then
     local dur = def.model.animations.death.duration or 0.5
-    update_animation(me, "death", def.model.animations)
+    update_animation(me, "death", def.model.animations["death"])
     core.after(dur, function()
       me:remove()
     end)
