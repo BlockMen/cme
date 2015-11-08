@@ -128,7 +128,6 @@ local def = {
       range = 8,
       player_range = 20,
       number = 6,
-      light = {min = 2, max = 15},
     }
   },
 
