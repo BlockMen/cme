@@ -182,15 +182,15 @@ local def = {
     if self.mode == "eat" and self.eat_node then
       self.regrow_wool = true
     end
-    if self.last_mode == "eat" and self.modetimer == 0 and self.regrow_wool then
+    if self.last_mode == "eat" and (self.modetimer and self.modetimer == 0) and self.regrow_wool then
       self.has_wool = true
       self.regrow_wool = nil
       self.object:set_properties({textures = {"creatures_sheep.png^creatures_sheep_white.png"}})
     end
-		if self.fed_cnt and self.fed_cnt > 4 then
-			self.tamed = true
-			self.fed_cnt = nil
-		end
+    if self.fed_cnt and self.fed_cnt > 4 then
+      self.tamed = true
+      self.fed_cnt = nil
+    end
   end
 }
 
