@@ -5,3 +5,12 @@ Version 2.1
 - Fixed bug that hostile mobs did sometimes not attack
 - Reduced sheep model size
 - Tweak codestyle a bit/ added missing documentation of combat values
+
+Version 2.2
+-----------
+- Added chicken
+- Readded sheep spawner (by LNJ)
+- Fix possible crash (reported by bbaez)
+- Added descriptions to spawners
+- Added option to set custom panic and swim animations
+
