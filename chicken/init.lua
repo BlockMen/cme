@@ -21,6 +21,19 @@
 
 
 
+
+core.register_craftitem(":creatures:egg", {
+	description = "Egg",
+	inventory_image = "creatures_egg.png"
+})
+
+local function dropEgg(obj)
+  local pos = obj:getpos()
+  if pos then
+    creatures.dropItems(pos, {{"creatures:egg"}})
+  end
+end
+
 local def = {
   -- general
   name = "creatures:chicken",
@@ -30,17 +43,18 @@ local def = {
     can_jump = 1,
     can_swim = true,
     can_burn = true,
-		can_panic = true,
+    can_panic = true,
     has_kockback = true,
     sneaky = true,
   },
 
   modes = {
     idle = {chance = 0.25, duration = 5, update_yaw = 3},
-    idle2 = {chance = 0.3, duration = 1},
-    pick = {chance = 0.25, duration = 2},
+    idle2 = {chance = 0.69, duration = 0.8},
+    pick = {chance = 0.2, duration = 2},
     walk = {chance = 0.2, duration = 5.5, moving_speed = 0.7, update_yaw = 2},
-    panic = {moving_speed = 2.1}
+    panic = {moving_speed = 2.1},
+    lay_egg = {chance = 0.01, duration = 1},
   },
 
   model = {
@@ -48,6 +62,7 @@ local def = {
     textures = {"creatures_chicken.png"},
     collisionbox = {-0.25, -0.01, -0.3, 0.25, 0.45, 0.3},
     rotation = -90.0,
+    collide_with_objects = false,
     animations = {
       idle = {start = 0, stop = 1, speed = 10},
       idle2 = {start = 41, stop = 61, speed = 70},
@@ -82,11 +97,19 @@ local def = {
 
     spawn_egg = {
       description = "Chicken Spawn-Egg",
-    --  texture = "creatures_spawn_egg.png",
     },
-
   },
 
+  drops = {
+    {"creatures:flesh"},
+  },
+
+  on_step = function(self, dtime)
+    if self.mode == "lay_egg" then
+      dropEgg(self.object)
+      self.modetimer = 2
+    end
+  end
 }
 
 creatures.register_mob(def)
