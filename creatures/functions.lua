@@ -481,7 +481,7 @@ creatures.on_step = function(self, dtime)
       if name == self.last_node.name then
         eat_node = current_pos
         break
-      elseif name == sn.name then
+      elseif sn and sn.name == name then
         eat_node = p
         break
       end

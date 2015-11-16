@@ -2,7 +2,7 @@ Creatures MOB-Engine
 ====================
 Copyright (c) 2015 BlockMen <blockmen2015@gmail.com>
 
-Version: 2.0 Beta
+Version: 2.0.1
 
 
 This mod provides an engine, that handles the base function for MOB in Minetest.
@@ -12,7 +12,7 @@ performance and functionality.
 See API.txt for more informations on how to use this engine for mobs.
 
 
-License: 
+License:
 ~~~~~~~~
 Code:
 (c) Copyright 2015 BlockMen; modified zlib-License

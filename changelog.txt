@@ -14,3 +14,6 @@ Version 2.2
 - Added descriptions to spawners
 - Added option to set custom panic and swim animations
 
+Version 2.2.1
+-------------
+- Fixed crash caused by not existing node
