@@ -21,12 +21,7 @@
 
 
 
-
-core.register_craftitem(":creatures:egg", {
-	description = "Egg",
-	inventory_image = "creatures_egg.png"
-})
-
+dofile(core.get_modpath("chicken") .. "/egg.lua")
 local function dropEgg(obj)
   local pos = obj:getpos()
   if pos then
