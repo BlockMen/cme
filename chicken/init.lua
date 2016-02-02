@@ -21,6 +21,7 @@
 
 
 
+-- Egg
 dofile(core.get_modpath("chicken") .. "/egg.lua")
 local function dropEgg(obj)
   local pos = obj:getpos()
@@ -28,6 +29,32 @@ local function dropEgg(obj)
     creatures.dropItems(pos, {{"creatures:egg"}})
   end
 end
+
+-- Flesh
+core.register_craftitem(":creatures:chicken_flesh", {
+	description = "Raw Chicken Flesh",
+	inventory_image = "creatures_chicken_flesh.png",
+	on_use = core.item_eat(1)
+})
+
+core.register_craftitem(":creatures:chicken_meat", {
+	description = "Chicken Meat",
+	inventory_image = "creatures_chicken_meat.png",
+	on_use = core.item_eat(3)
+})
+
+core.register_craft({
+	type = "cooking",
+	output = "creatures:chicken_meat",
+	recipe = "creatures:chicken_flesh",
+})
+
+-- Feather
+core.register_craftitem(":creatures:feather", {
+	description = "Feather",
+	inventory_image = "creatures_feather.png",
+	on_use = core.item_eat(3)
+})
 
 local def = {
   -- general
@@ -96,7 +123,8 @@ local def = {
   },
 
   drops = {
-    {"creatures:flesh"},
+    {"creatures:chicken_flesh"},
+    {"creatures:feather", {min = 1, max = 2}, chance = 0.45},
   },
 
   on_step = function(self, dtime)
