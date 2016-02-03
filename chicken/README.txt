@@ -1,6 +1,6 @@
 Chicken for Creatures MOB-Engine
 ================================
-Copyright (c) 2015 BlockMen <blockmen2015@gmail.com>
+Copyright (c) 2015-2016 BlockMen <blockmen2015@gmail.com>
 
 Version: 2.1 Beta
 
@@ -14,14 +14,14 @@ randomly eggs (which can be thrown to spawn new chicken)
 License:
 ~~~~~~~~
 Code:
-(c) Copyright 2015 BlockMen; modified zlib-License
+(c) Copyright 2015-2016 BlockMen; modified zlib-License
 see "LICENSE.txt" for details.
 
 Media(textures and meshes/models):
 Gamit(WTFPL):
   creatures_egg.png
 everything else:
-(c) Copyright (2014-2015) BlockMen; CC-BY-SA 3.0
+(c) Copyright (2014-2016) BlockMen; CC-BY-SA 3.0
 
 Sounds:
 - creatures_chicken*.ogg, dobroide(https://freesound.org/people/dobroide) CC BY 3.0

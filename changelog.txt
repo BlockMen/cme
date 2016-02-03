@@ -17,3 +17,10 @@ Version 2.2
 Version 2.2.1
 -------------
 - Fixed crash caused by not existing node
+
+Version 2.2.2
+-------------
+- Eggs can be thrown to spawn chicken (rare)
+- Chicken drop chicken meat and feather(s) on death
+- Fixed spawn eggs being endless in singleplayer
+- Fix searching for target if in panic mode

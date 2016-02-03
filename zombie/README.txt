@@ -1,6 +1,6 @@
 Zombie for Creatures MOB-Engine
 ===============================
-Copyright (c) 2015 BlockMen <blockmen2015@gmail.com>
+Copyright (c) 2015-2016 BlockMen <blockmen2015@gmail.com>
 
 Version: 2.0 Beta
 
@@ -15,11 +15,11 @@ Zombies have 20 HP (like players) and drop rotten flesh randomly.
 License: 
 ~~~~~~~~
 Code:
-(c) Copyright 2015 BlockMen; modified zlib-License
+(c) Copyright 2015-2016 BlockMen; modified zlib-License
 see "LICENSE.txt" for details.
 
 Media(textures and meshes/models):
-(c) Copyright (2014-2015) BlockMen; CC-BY-SA 3.0
+(c) Copyright (2014-2016) BlockMen; CC-BY-SA 3.0
 
 Sounds:
 - creatures_zombie.1.ogg, Under7dude(https://freesound.org/people/Under7dude) CC0

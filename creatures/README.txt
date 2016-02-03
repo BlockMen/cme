@@ -1,6 +1,6 @@
 Creatures MOB-Engine
 ====================
-Copyright (c) 2015 BlockMen <blockmen2015@gmail.com>
+Copyright (c) 2015-2016 BlockMen <blockmen2015@gmail.com>
 
 Version: 2.0.2
 
@@ -15,11 +15,11 @@ See API.txt for more informations on how to use this engine for mobs.
 License:
 ~~~~~~~~
 Code:
-(c) Copyright 2015 BlockMen; modified zlib-License
+(c) Copyright 2015-2016 BlockMen; modified zlib-License
 see "LICENSE.txt" for details.
 
 Media(textures and other media):
-(c) Copyright (2014-2015) BlockMen; CC-BY-SA 3.0
+(c) Copyright (2014-2016) BlockMen; CC-BY-SA 3.0
 
 Github:
 ~~~~~~~

@@ -2,7 +2,7 @@ Mod/Modpack Creatures
 =====================
 Copyright (c) 2015 BlockMen <blockmen2015@gmail.com>
 
-Version: 2.2.1
+Version: 2.2.2
 
 
 A Mod(pack) for Minetest that provides a MOB-Engine and adds several creatures to the game.
