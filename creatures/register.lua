@@ -410,7 +410,7 @@ local function eggSpawn(itemstack, placer, pointed_thing, egg_def)
     local height = (egg_def.box[5] or 2) - (egg_def.box[2] or 0)
     if checkSpace(pos, height) == true then
       core.add_entity(pos, egg_def.mob_name)
-      if not core.setting_getbool("creative_mode") then
+      if core.setting_getbool("creative_mode") ~= true then
         itemstack:take_item()
       end
     end
@@ -429,7 +429,7 @@ function creatures.register_egg(egg_def)
     inventory_image = egg_def.texture or "creatures_spawn_egg.png",
     liquids_pointable = false,
     on_place = function(itemstack, placer, pointed_thing)
-      eggSpawn(itemstack, placer, pointed_thing, egg_def)
+      return eggSpawn(itemstack, placer, pointed_thing, egg_def)
     end,
   })
   return true
