@@ -39,6 +39,7 @@ local function knockback(selfOrObject, dir, old_dir, strengh)
     if selfOrObject.stunned == true then
       selfOrObject.stunned = false
       if selfOrObject.can_panic == true then
+        selfOrObject.target = nil
         selfOrObject.mode = "_run"
         selfOrObject.modetimer = 0
       end
@@ -436,7 +437,7 @@ creatures.on_step = function(self, dtime)
   end
 
   -- search a target (1-2ms)
-  if not self.target and ((self.hostile and def.combat.search_enemy) or modes["follow"]) then
+  if not self.target and ((self.hostile and def.combat.search_enemy) or modes["follow"]) and current_mode ~= "_run" then
     local timer
     if self.hostile then
       timer = def.combat.search_timer or 2
