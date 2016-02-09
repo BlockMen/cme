@@ -35,6 +35,7 @@ local function translate_def(def)
   	visual_size = def.model.scale or {x = 1, y = 1},
     backface_culling = def.model.backface_culling or false,
     collide_with_objects = def.model.collide_with_objects or true,
+    makes_footstep_sound = true,
 
     stats = def.stats,
     model = def.model,
@@ -79,8 +80,8 @@ local function translate_def(def)
     end
   end
 
-  if not def.stats.can_fly or not def.stats.sneaky then
-    new_def.makes_footstep_sound = true
+  if def.stats.sneaky or def.stats.can_fly then
+    new_def.makes_footstep_sound = false
   end
 
 
