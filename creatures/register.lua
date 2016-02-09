@@ -333,6 +333,7 @@ function creatures.register_spawn(spawn_def)
     neighbors = spawn_def.abm_nodes.neighbors,
     interval = spawn_def.abm_interval or 44,
     chance = spawn_def.abm_chance or 7000,
+    catch_up = false,
     action = function(pos, node, active_object_count, active_object_count_wider)
       -- prevent abm-"feature"
       if stopABMFlood() == true then
@@ -548,6 +549,7 @@ function creatures.register_spawner(spawner_def)
       nodenames = {spawner_def.mob_name .. "_spawner"},
 		  interval = 2,
 		  chance = 1,
+		  catch_up = false,
 		  action = function(pos)
         local id = core.pos_to_string(pos)
         if not spawner_timers[id] then
