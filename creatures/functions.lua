@@ -29,11 +29,12 @@ local function knockback(selfOrObject, dir, old_dir, strengh)
   if selfOrObject.mob_name then
     object = selfOrObject.object
   end
+  local current_fmd = object:get_properties().automatic_face_movement_dir or 0
   object:set_properties({automatic_face_movement_dir = false})
   object:setvelocity(vector.add(old_dir, {x = dir.x * strengh, y = 3.5, z = dir.z * strengh}))
   old_dir.y = 0
   core.after(0.4, function()
-    object:set_properties({automatic_face_movement_dir = -90.0})
+    object:set_properties({automatic_face_movement_dir = current_fmd})
     object:setvelocity(old_dir)
     selfOrObject.falltimer = nil
     if selfOrObject.stunned == true then
