@@ -70,3 +70,15 @@ core.register_craftitem(":creatures:egg", {
 		return itemstack
 	end,
 })
+
+core.register_craftitem(":creatures:fried_egg", {
+	description = "Fried Egg",
+	inventory_image = "creatures_fried_egg.png",
+	on_use = core.item_eat(2)
+})
+
+core.register_craft({
+	type = "cooking",
+	output = "creatures:fried_egg",
+	recipe = "creatures:egg",
+})

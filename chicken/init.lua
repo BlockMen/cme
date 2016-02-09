@@ -53,7 +53,6 @@ core.register_craft({
 core.register_craftitem(":creatures:feather", {
 	description = "Feather",
 	inventory_image = "creatures_feather.png",
-	on_use = core.item_eat(3)
 })
 
 local def = {
