@@ -2,7 +2,7 @@ Chicken for Creatures MOB-Engine
 ================================
 Copyright (c) 2015-2016 BlockMen <blockmen2015@gmail.com>
 
-Version: 2.1 Beta
+Version: 2.1.1 Beta
 
 
 Adds chicken to Minetest (requires Creatures MOB-Engine).
@@ -25,6 +25,7 @@ everything else:
 
 Sounds:
 - creatures_chicken*.ogg, dobroide(https://freesound.org/people/dobroide) CC BY 3.0
+
 Github:
 ~~~~~~~
 https://github.com/BlockMen/cme/chicken
