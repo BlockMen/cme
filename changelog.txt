@@ -24,3 +24,12 @@ Version 2.2.2
 - Chicken drop chicken meat and feather(s) on death
 - Fixed spawn eggs being endless in singleplayer
 - Fix searching for target if in panic mode
+
+Version 2.3
+-----------
+- Added Oerrki
+- Added fried eggs
+- Fixed moveing facement being reset
+- Fixed chicken model
+- Fixed sneaky variable not working
+- Fixed feathers being eatable
