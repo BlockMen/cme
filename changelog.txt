@@ -33,3 +33,8 @@ Version 2.3
 - Fixed chicken model
 - Fixed sneaky variable not working
 - Fixed feathers being eatable
+
+Version 2.3.1
+-------------
+- Added colored sheep
+- Fixed Oerrki spawning times (spawns on night as intended)
