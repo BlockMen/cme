@@ -207,7 +207,7 @@ end
 
 local tool_uses = {0, 30, 110, 150, 280, 300, 500, 1000}
 local function addWearout(player, tool_def)
-	if not minetest.setting_getbool("creative_mode") then
+	if not minetest.settings:get_bool("creative_mode") then
 		local item = player:get_wielded_item()
 		if tool_def and tool_def.damage_groups and tool_def.damage_groups.fleshy then
 			local uses = tool_uses[tool_def.damage_groups.fleshy] or 0
@@ -222,7 +222,7 @@ end
 
 local function spawnParticles(...)
 end
-if minetest.setting_getbool("creatures_enable_particles") == true then
+if minetest.settings:get_bool("creatures_enable_particles") == true then
   spawnParticles = function(pos, velocity, texture_str)
     local vel = vector.multiply(velocity, 0.5)
     vel.y = 0

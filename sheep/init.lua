@@ -189,7 +189,7 @@ local def = {
 					shear(self, math.random(2, 3), true)
 					item:add_wear(65535/100)
 				end
-				if not minetest.setting_getbool("creative_mode") then
+				if not minetest.settings:get_bool("creative_mode") then
 					clicker:set_wielded_item(item)
 				end
 			end
