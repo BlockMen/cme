@@ -20,7 +20,7 @@
 --
 
 
-local allow_hostile = core.setting_getbool("only_peaceful_mobs") ~= true
+local allow_hostile = minetest.settings:get_bool("only_peaceful_mobs") ~= true
 
 local function translate_def(def)
   local new_def = {
@@ -179,7 +179,7 @@ local function translate_def(def)
 
     self.object:set_hp(self.hp)
 
-    if not core.setting_getbool("enable_damage") then
+    if not minetest.settings:get_bool("enable_damage") then
       self.hostile = false
     end
 
@@ -412,7 +412,7 @@ local function eggSpawn(itemstack, placer, pointed_thing, egg_def)
     local height = (egg_def.box[5] or 2) - (egg_def.box[2] or 0)
     if checkSpace(pos, height) == true then
       core.add_entity(pos, egg_def.mob_name)
-      if core.setting_getbool("creative_mode") ~= true then
+      if minetest.settings:get_bool("creative_mode") ~= true then
         itemstack:take_item()
       end
     end
