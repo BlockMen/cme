@@ -1,12 +1,12 @@
-Oerrki for Creatures MOB-Engine
+Oerkki for Creatures MOB-Engine
 ===============================
 Copyright (c) 2016 BlockMen <blockmen2015@gmail.com>
 
 Version: 1.0 Beta
 
 
-Adds classic Minetest Ghost called "Oerrki". (requires Creatures MOB-Engine).
-Oerrki spawn only at night or in dark places and remain around 5 minutes in the world.
+Adds classic Minetest Ghost called "Oerkki". (requires Creatures MOB-Engine).
+Oerkki spawn only at night or in dark places and remain around 5 minutes in the world.
 Other than Ghosts or Zombies they don't die by sunlight.
 
 

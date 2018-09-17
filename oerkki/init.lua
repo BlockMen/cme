@@ -1,4 +1,4 @@
---= Oerrki for Creatures MOB-Engine (cme) =--
+--= Oerkki for Creatures MOB-Engine (cme) =--
 -- Copyright (c) 2016 BlockMen <blockmen2015@gmail.com>
 --
 -- init.lua
@@ -21,7 +21,7 @@
 
 
 local def = {
-  name = "creatures:oerrki",
+  name = "creatures:oerkki",
   stats = {
     hp = 13,
     lifetime = 540, -- 9 Minutes
@@ -36,9 +36,9 @@ local def = {
   },
 
   model = {
-    mesh = "creatures_oerrki.b3d",
-    textures = {"creatures_oerrki.png"},
-    collisionbox = {-0.25, -0.01, -0.3, 0.25, 1.75, 0.3},
+    mesh = "creatures_oerkki.b3d",
+    textures = {"creatures_oerkki.png"},
+    collisionbox = {-0.22, -0.01, -0.22, 0.22, 1.65, 0.22},
     rotation = -90.0,
     animations = {
       idle = {start = 1, stop = 23, speed = 15},
@@ -50,12 +50,12 @@ local def = {
   },
 
   sounds = {
-      on_damage = {name = "creatures_oerrki_hit", gain = 1.0, distance = 10},
-      on_death = {name = "creatures_oerrki_hit", gain = 1.0, distance = 10},
+      on_damage = {name = "creatures_oerkki_hit", gain = 1.0, distance = 10},
+      on_death = {name = "creatures_oerkki_hit", gain = 1.0, distance = 10},
       swim = {name = "creatures_splash", gain = 1.0, distance = 10},
       random = {
-        idle = {name = "creatures_oerrki_idle", gain = 1.0, distance = 25},
-        attack = {name = "creatures_oerrki_attack", gain = 1.0, distance = 20},
+        idle = {name = "creatures_oerkki_idle", gain = 1.0, distance = 25},
+        attack = {name = "creatures_oerkki_attack", gain = 1.0, distance = 20},
       },
   },
 
@@ -93,12 +93,12 @@ local def = {
     height_limit = {min = -200, max = 50},
 
     spawn_egg = {
-      description = "Oerrki Spawn-Egg",
-      texture = "creatures_egg_oerrki.png",
+      description = "Oerkki Spawn-Egg",
+      texture = "creatures_egg_oerkki.png",
     },
 
     spawner = {
-      description = "Oerrki Spawner",
+      description = "Oerkki Spawner",
       range = 8,
       player_range = 20,
       number = 6,
@@ -108,3 +108,6 @@ local def = {
 }
 
 creatures.register_mob(def)
+
+-- Convert "Oerrki's" (caused by typo)
+creatures.register_alias("creatures:oerrki", "creatures:oerkki")

@@ -55,6 +55,12 @@ core.register_craftitem(":creatures:feather", {
 	inventory_image = "creatures_feather.png",
 })
 
+
+local colors = {
+	white = {chance = 0.7},
+	brown = {chance = 0.3}
+}
+
 local def = {
   -- general
   name = "creatures:chicken",
@@ -74,14 +80,14 @@ local def = {
     idle2 = {chance = 0.69, duration = 0.8},
     pick = {chance = 0.2, duration = 2},
     walk = {chance = 0.2, duration = 5.5, moving_speed = 0.7, update_yaw = 2},
-    panic = {moving_speed = 2.1},
+    panic = {moving_speed = 3.1, update_yaw = 0.8},
     lay_egg = {chance = 0.01, duration = 1},
   },
 
   model = {
     mesh = "creatures_chicken.b3d",
-    textures = {"creatures_chicken.png"},
-    collisionbox = {-0.25, -0.01, -0.3, 0.25, 0.45, 0.3},
+    textures = {"creatures_chicken_white.png"},
+    collisionbox = {-0.19, -0.01, -0.19, 0.19, 0.52, 0.19},
     rotation = 90.0,
     collide_with_objects = false,
     animations = {
@@ -125,6 +131,20 @@ local def = {
     {"creatures:chicken_flesh"},
     {"creatures:feather", {min = 1, max = 2}, chance = 0.45},
   },
+
+  get_staticdata = function(self)
+  	return {
+  		feather_color = self.feather_color,
+  	}
+  end,
+
+  on_activate = function(self, staticdata)
+    if not self.feather_color then
+      self.feather_color = creatures.rnd(colors) or "white"
+    end
+    -- update feather color
+    self.object:set_properties({textures = {"creatures_chicken_" .. self.feather_color .. ".png"}})
+  end,
 
   on_step = function(self, dtime)
     if self.mode == "lay_egg" then
